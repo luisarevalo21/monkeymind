@@ -1,6 +1,7 @@
 *{
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 html, 
@@ -8,13 +9,28 @@ body {
     margin: 0;
     padding: 0;
     min-width: 300px;
+    box-sizing: border-box;
 }
 
 body{
     /* background: #E5E7EB;    */
-    font-family: 'Space Grotesk', sans-serif;       
+    font-family: 'Space Grotesk', sans-serif;
+       
 }
 
+main{
+    /* display: grid; */
+    max-width: 900px;
+    margin: 0 auto;
+    height: 100vh;
+    padding: 3em; 
+}
+
+.container{
+    box-sizing: border-box;
+    border : 1px solid black;
+    box-shadow: 4px 4px 0px grey;
+}
 /* grid-structure */
 /* caveat 1: use no quotes while assigning area names to grid-area */
 /* caveat 2: a grid parent only affects its own child elements, not the grand-children, solution is to nest another grid inside the child element */
@@ -24,6 +40,28 @@ header{
     flex-direction: row;
     justify-content: space-around;
     font-family: 'Space Grotesk', sans-serif;       
+}
+
+button{
+    font-family: inherit;
+    font-size: 1.2rem;
+    text-transform: capitalize;
+    padding: 1em;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 4px 4px 0px grey;
+    margin: 1em auto;
+    background-color: rgb(43, 101, 226);
+    color:white;
+}
+
+input{
+    font-size: 1em;
+    padding: 2em;
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.5rem;
 }
 
 .logo{
@@ -96,7 +134,7 @@ a{
 footer{
     grid-area: footer;
     color: white;
-    width: 100%;
+    /* width: 100%; */
     padding: 2em;
     min-height: 5em;
     background: #202020;
@@ -111,7 +149,7 @@ footer{
         grid-gap: 1em;
         grid-template-columns:  1fr 1fr; 
         grid-template-areas: "header header"
-                              "hero hero"
+                              "main main"
                               "posts posts"
                               "footer footer"            
     }
@@ -123,7 +161,7 @@ footer{
     body{
         grid-template-columns:  1fr 1fr 1fr;
         grid-template-areas:    "header header header"
-                                "hero   hero   hero"
+                                "timer   todo   todo"
                                 "posts  posts  posts"
                                 "footer footer footer";                            
     }
@@ -150,4 +188,6 @@ footer{
         margin: 0;
     }
 }
+
+/* timer */
 
