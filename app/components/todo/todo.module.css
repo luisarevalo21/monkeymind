@@ -1,0 +1,19 @@
+.todo{
+    margin-top: 1em;
+    width: 50%;
+    display: flex;
+    grid-area: "todo";
+    flex-direction: column;
+    box-sizing: border-box;
+    border : 1px solid grey;
+
+}
+
+.createTask{
+        width : 100%;
+        border-radius: 3px;
+        justify-content: start;
+        padding: 1em;
+        width: 50%;
+        
+}
