@@ -1,137 +1,185 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Karla font */
+@import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html, 
+html,
 body {
     margin: 0;
     padding: 0;
     min-width: 300px;
-    box-sizing: border-box;
 }
 
-body{
+body {
     /* background: #E5E7EB;    */
-    font-family: 'Space Grotesk', sans-serif;
-       
+    /* font-family: 'Space Grotesk', sans-serif; */
+    font-family: 'Karla', sans-serif;
 }
 
-main{
-    /* display: grid; */
+main {
+    display: flex;
+    flex-direction: column;
     max-width: 900px;
     margin: 0 auto;
     height: 100vh;
-    padding: 3em; 
+    padding: 1em;
 }
 
-.container{
-    box-sizing: border-box;
-    border : 1px solid black;
+.taskControl {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    align-items: flex-start;
+    justify-content: space-around;
+
+}
+
+.modern-look {
+    border: 1px solid black;
     box-shadow: 4px 4px 0px grey;
 }
+
+.container {
+    /* border: 0.1px solid lightgrey; */
+    /* box-shadow: 0px 1px 3px grey; */
+
+}
+
+.haiku {
+    margin: 0px auto;
+}
+
 /* grid-structure */
 /* caveat 1: use no quotes while assigning area names to grid-area */
 /* caveat 2: a grid parent only affects its own child elements, not the grand-children, solution is to nest another grid inside the child element */
 
-header{
+
+/* - header-start -  */
+header {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
-    font-family: 'Space Grotesk', sans-serif;       
-}
-
-button{
-    font-family: inherit;
-    font-size: 1.2rem;
-    text-transform: capitalize;
+    max-width: 900px;
+    margin: 0 auto;
+    height: 6em;
+    justify-content: space-between;
+    align-items: center;
     padding: 1em;
-    border: none;
-    border-radius: 3px;
-    box-shadow: 4px 4px 0px grey;
-    margin: 1em auto;
-    background-color: rgb(43, 101, 226);
-    color:white;
+    /* font-family: 'Space Grotesk', sans-serif; */
 }
 
-input{
-    font-size: 1em;
-    padding: 2em;
-    display: block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.5rem;
-}
-
-.logo{
+.logo {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
 
-.logo-icon{
+.logo-icon {
     height: 2.5em;
-    padding: 0.5em;
+    padding: 0.4em;
 }
 
-.logo-text{
+.logo-text {
     font-size: 1.25em;
-    font-weight: bold; 
+    font-weight: bold;
 }
 
-ul{ 
+ul {
     list-style: none;
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
-li{
+li {
     padding: 1em;
 }
 
-a{
-    text-decoration: none;  
+a {
+    text-decoration: none;
 }
 
-.hero{ 
-    min-height: 500px; 
+/* --header-end--- */
+
+button,
+input {
+    font-family: inherit;
+    font-size: 1em;
+    padding: 1em;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 1px 3px grey;
+}
+
+button {
+    font-weight: bolder;
+    text-transform: uppercase;
+}
+
+input {
+    width: 100%;
+    margin: 1em auto;
+}
+
+.hero {
+    min-height: 500px;
     background-size: cover;
-    background-repeat: no-repeat; 
-    color:white; 
+    background-repeat: no-repeat;
+    color: white;
     background: url("../public/monkey.png")
 }
 
-.hero-title{
-    margin: auto 0; 
-    padding-left: 2em; 
+.hero-title {
+    margin: auto 0;
+    padding-left: 2em;
 }
-.posts{
+
+.posts {
     padding: 1em;
-    margin: 0 auto; 
+    margin: 0 auto;
 }
 
 .post-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     text-align: left;
     background: white;
-    border-radius: 5px;
-    margin-bottom: 1em; 
-    box-shadow: 0 1px 10px grey;
+    border-radius: 4px;
+    margin-bottom: 1em;
+    box-shadow: 0px 1px 3px grey;
 }
 
-.post-img{
+.post-img {
     width: 100%;
     max-height: 150px;
     object-fit: cover;
-    border-radius: 5px 5px 0 0; 
+    border-radius: 5px 5px 0 0;
 }
 
-.post-info{
+.post-date {
+    margin-bottom: 0.3em;
+}
+
+.post-title {
+    margin-bottom: 0.3em;
+}
+
+.post-info {
+    padding: 1em;
+    flex-direction: column;
+    justify-content: space-around;
+    display: flex;
+}
+
+.readMore {
     padding: 0 1em 1em;
 }
 
-footer{
+footer {
     grid-area: footer;
     color: white;
     /* width: 100%; */
@@ -139,55 +187,55 @@ footer{
     min-height: 5em;
     background: #202020;
     text-align: center;
-    
+
 }
 
-@media  (min-width: 600px){
-    
-    .posts{
+@media (min-width: 600px) {
+
+    .posts {
         display: grid;
         grid-gap: 1em;
-        grid-template-columns:  1fr 1fr; 
+        grid-template-columns: 1fr 1fr;
         grid-template-areas: "header header"
-                              "main main"
-                              "posts posts"
-                              "footer footer"            
+            "main main"
+            "posts posts"
+            "footer footer"
     }
-    
+
 }
 
-@media  (min-width: 768px){
-    
-    body{
-        grid-template-columns:  1fr 1fr 1fr;
-        grid-template-areas:    "header header header"
-                                "timer   todo   todo"
-                                "posts  posts  posts"
-                                "footer footer footer";                            
+@media (min-width: 768px) {
+
+    body {
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-areas:
+            "header header header"
+            "timer   todo   todo"
+            "footer footer footer";
     }
 
-    header{
+    header {
         grid-area: header;
     }
-    
-    .hero{
+
+    .hero {
         max-width: 900px;
-        margin: 0 auto ; 
+        margin: 0 auto;
     }
-    .posts{
+
+    .posts {
         display: grid;
         max-width: 900px;
         grid-area: posts;
         grid-template-columns: 1fr 1fr 1fr;
         grid-gap: 1em;
         /* grid-template-columns: subgrid;  -> not supported in chrome yet */
-        border : 1px solid blue; 
+        border: 1px solid lightgrey;
     }
 
-     .post-preview{
+    .post-preview {
         margin: 0;
     }
 }
 
 /* timer */
-

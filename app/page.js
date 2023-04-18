@@ -1,18 +1,24 @@
 import Image from "next/image";
 import { Space_Grotesk } from "next/font/google";
-import TimerControl from "./components/timer/TimerControl";
+import { Karla } from "next/font/google";
+import Timer from "./components/timer/Timer";
 import Todo from "./components/todo/Todo";
+import Timeline from "./components/timeline/Timeline";
 
 import styles from "./page.module.css";
-import TimerExtension from "./components/timer/TimerControl";
+import Chatbot from "./components/chatbot/Chatbot";
 
-const font = Space_Grotesk({ subsets: ["latin"] });
+// const font = Space_Grotesk({ subsets: ["latin"] });
 
 export default function Home() {
   return (
-    <main className={font.className}>
-      <TimerControl />
-      <Todo />
+    <main>
+      <Timeline />
+      <div className="taskControl">
+        <Todo />
+        <Timer />
+        <Chatbot />
+      </div>
     </main>
   );
 }

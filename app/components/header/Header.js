@@ -11,10 +11,15 @@ export default function Header() {
       <nav>
         <ul>
           <li>
-            <Link href="/">Home </Link>
+            <Link href="/">Work</Link>
           </li>
           <li>
-            <Link href="/about">About</Link>
+            <Link href="/blog">Blog</Link>
+          </li>
+          <li>
+            <Link className="loginBtn" href="/login">
+              Login
+            </Link>
           </li>
         </ul>
       </nav>

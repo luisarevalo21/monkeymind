@@ -1,19 +1,64 @@
-.todo{
-    margin-top: 1em;
-    width: 50%;
+.component_wrapper {
+    grid-area: todo;
     display: flex;
-    grid-area: "todo";
+    width: 50%;
     flex-direction: column;
     box-sizing: border-box;
-    border : 1px solid grey;
-
+    border-radius: 3px;
+    padding: 1em;
 }
 
-.createTask{
-        width : 100%;
-        border-radius: 3px;
-        justify-content: start;
-        padding: 1em;
-        width: 50%;
-        
+.tasks {
+    width: 100%;
+}
+
+.taskInput,
+.taskSubmit_btn,
+.taskItem {
+    font-family: inherit;
+    font-size: 1rem;
+    box-shadow: 0px 1px 3px grey;
+    border-radius: 4px;
+    padding: 1em;
+    margin-bottom: 0.5em;
+    /* border: 1px solid black; */
+}
+
+.taskSubmit_btn {
+    background-color: white;
+    color: black;
+    letter-spacing: normal;
+    margin: 0 0 0 0.5em;
+    height: 100%;
+}
+
+.taskItem {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    width: 100%;
+}
+
+.stopwatch {
+    font-size: 1em;
+    text-shadow: 0px 1px 1px grey;
+    cursor: pointer;
+    /* justify-self: flex-end; */
+}
+
+.taskInput_container {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.deleteBtn {
+    font-size: 0.5em;
+    text-shadow: 0px 1px 1px grey;
+    margin-right: 1em;
+}
+
+.taskText {
+    flex-grow: 1;
 }

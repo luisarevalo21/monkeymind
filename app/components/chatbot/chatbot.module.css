@@ -1,0 +1,15 @@
+.componentWrapper {
+    padding: 1em;
+    min-width: 300px;
+}
+
+.promptInput {
+    margin-top: 1em;
+    font-size: 1em;
+    padding: 2em;
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    height: 3em;
+    border: 0.1px solid lightgrey;
+}

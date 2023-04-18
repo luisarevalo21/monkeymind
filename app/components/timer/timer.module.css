@@ -1,5 +1,5 @@
 .timer {
-    grid-area: "timer";
+    grid-area: timer;
     display: flex;
     flex-direction: column;
     border-radius: 3px;
@@ -8,24 +8,17 @@
     width: 50%;
 }
 
-.form {
-    max-width: 150px;
-}
+.form {}
 
 .counter {
     font-size: 6em;
     padding: 1rem;
 }
 
-.input {
-    /* display: block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0.5rem; */
-}
-
 .startBtn {
     width: 100%;
 }
 
-.sessionTable {}
+.sessionTable {
+    display: grid;
+}

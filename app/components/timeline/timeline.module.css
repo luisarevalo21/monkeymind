@@ -1,0 +1,13 @@
+.timeline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    margin-bottom: 1em;
+}
+
+.sun,
+.moon {
+    font-size: 1.5em;
+}
