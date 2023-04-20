@@ -3,7 +3,7 @@
 import { React, useState, useEffect } from "react";
 import styles from "./todo.module.css";
 
-export default function Todo() {
+export default function Todo({ timer, handleStart }) {
   const [taskInput, setTaskInput] = useState("");
   const [taskData, setTaskData] = useState([
     // "Work on extension      ",
@@ -39,10 +39,20 @@ export default function Todo() {
 
   let taskElements = taskData.map(function (task, index) {
     return (
-      <div className={styles.taskItem} key={index}>
-        {/* <p className={styles.deleteBtn}>❌</p> */}
-        <p className={styles.taskText}>{task}</p>
-        <p className={styles.stopwatch}>⏱️</p>
+      <div className={styles.taskItem} onClick={handleStart} key={index}>
+        <div className={styles.taskContent}>
+          {/* <p className={styles.deleteBtn}>❌</p> */}
+          <p className={styles.taskText}>{task}</p>
+          <p className={styles.stopwatch}>⏱️</p>
+        </div>
+        <div
+          className="loadBar"
+          style={{
+            width: `${(timer / 25) * 100}%`,
+            height: "2px",
+            backgroundColor: "lightgreen",
+          }}
+        ></div>
       </div>
     );
   });

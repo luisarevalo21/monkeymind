@@ -17,10 +17,10 @@
 .taskItem {
     font-family: inherit;
     font-size: 1rem;
-    box-shadow: 0px 1px 3px grey;
     border-radius: 4px;
     padding: 1em;
     margin-bottom: 0.5em;
+    box-shadow: 0px 1px 3px grey;
     /* border: 1px solid black; */
 }
 
@@ -34,10 +34,14 @@
 
 .taskItem {
     display: flex;
-    flex-direction: row;
-
-    align-items: center;
+    flex-direction: column;
     width: 100%;
+}
+
+.taskContent {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .stopwatch {

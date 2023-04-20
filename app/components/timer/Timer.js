@@ -3,39 +3,40 @@
 import React, { useState, useEffect } from "react";
 import styles from "./timer.module.css";
 
-function TimerControl() {
-  const sessionPeriods = [25, 30, 40, 50];
-  const [timer, setTimer] = useState(0);
-  const [session, setSession] = useState({
-    startTime: "start",
-    finishTime: "finish",
-  });
+function Timer({ timer, handleStart, session }) {
+  console.log(timer);
+  // const sessionPeriods = [25, 30, 40, 50];
+  // const [timer, setTimer] = useState(0);
+  // const [session, setSession] = useState({
+  //   startTime: "start",
+  //   finishTime: "finish",
+  // });
 
-  function handleStart(event) {
-    event.preventDefault();
-    let date = new Date();
+  // function handleStart(event) {
+  //   event.preventDefault();
+  //   let date = new Date();
 
-    setSession((prev) => ({
-      ...prev,
-      startTime: date.toTimeString(),
-    }));
+  //   setSession((prev) => ({
+  //     ...prev,
+  //     startTime: date.toTimeString(),
+  //   }));
 
-    let userValue = document.getElementById("timerInput").value;
+  //   let userValue = document.getElementById("timerInput").value;
 
-    let interval = setInterval(function () {
-      if (userValue > 0) {
-        userValue--;
-        setTimer((prev) => prev + 1);
-      } else {
-        clearInterval(interval);
-        let date = new Date();
-        setSession((prev) => ({
-          ...prev,
-          finishTime: date.toTimeString(),
-        }));
-      }
-    }, 1000);
-  }
+  //   let interval = setInterval(function () {
+  //     if (userValue > 0) {
+  //       userValue--;
+  //       setTimer((prev) => prev + 1);
+  //     } else {
+  //       clearInterval(interval);
+  //       let date = new Date();
+  //       setSession((prev) => ({
+  //         ...prev,
+  //         finishTime: date.toTimeString(),
+  //       }));
+  //     }
+  //   }, 1000);
+  // }
 
   return (
     <div className={`container ${styles.timer}`}>
@@ -56,6 +57,7 @@ function TimerControl() {
             <option value="50">50</option>
           </select>
         </label> */}
+
         <button className={`button ${styles.startBtn}`} onClick={handleStart}>
           Start
         </button>
@@ -68,4 +70,4 @@ function TimerControl() {
   );
 }
 
-export default TimerControl;
+export default Timer;

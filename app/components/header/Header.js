@@ -4,14 +4,16 @@ import Link from "next/link";
 export default function Header() {
   return (
     <header className="header">
-      <div className="logo">
-        <img className="logo-icon" src="/icon128.png" />
-        <p className="logo-text">Monkey Mind</p>
-      </div>
+      <Link href="/">
+        <div className="logo">
+          <img className="logo-icon" src="/icon128.png" />
+          <p className="logo-text">Monkey Mind</p>
+        </div>
+      </Link>
       <nav>
         <ul>
           <li>
-            <Link href="/">Work</Link>
+            <Link href="/work">Work</Link>
           </li>
           <li>
             <Link href="/blog">Blog</Link>
