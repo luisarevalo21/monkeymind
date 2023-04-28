@@ -4,7 +4,12 @@ import { React, useState, useEffect } from "react";
 import Todo from "./Todo.js";
 import styles from "./todos.module.css";
 
-export default function Todos({ timer, handleTimer, taskData, setTaskData }) {
+export default function TodoController({
+  timer,
+  handleTimer,
+  taskData,
+  setTaskData,
+}) {
   const [taskInput, setTaskInput] = useState("");
 
   function handleClick(event) {
@@ -24,6 +29,7 @@ export default function Todos({ timer, handleTimer, taskData, setTaskData }) {
         ...prevTasks,
       ]);
     }
+    // reset input
     setTaskInput("");
   }
 
@@ -40,7 +46,6 @@ export default function Todos({ timer, handleTimer, taskData, setTaskData }) {
           task={task}
           timer={timer}
           index={index}
-          active={task.active}
           handleTimer={handleTimer}
           setTaskData={setTaskData}
         />

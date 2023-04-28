@@ -10,27 +10,23 @@ function Timer({ timer, handleTimer, session }) {
       <form className="timer-form">
         <p>Enter work period</p>
         <input
-          type="text"
+          type="number"
           placeholder="Work period"
           id="timerInput"
           className={styles.input}
         />
-        {/* <label>
+        <label>
           Pick a time period:
           <select name="selectedFruit">
             <option value="25">25</option>
             <option value="40">40</option>
             <option value="50">50</option>
           </select>
-        </label> */}
+        </label>
         <button className={`button ${styles.startBtn}`} onClick={handleTimer}>
           Start
         </button>
       </form>
-      <div className={styles.sessionTable}>
-        <p> Session Start : {session.startTime}</p>
-        <p> Session End : {session.endTime}</p>
-      </div>
     </div>
   );
 }

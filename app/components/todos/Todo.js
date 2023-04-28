@@ -2,28 +2,14 @@ import { React, useState, useEffect } from "react";
 import styles from "./todos.module.css";
 
 export default function Todo({ task, timer, index, handleTimer, setTaskData }) {
-  useEffect(() => {
-    if (timer === 0) {
-      setActive(false);
-    }
-  }, [timer]);
+  const [active, setActive] = useState(false);
 
   function handleTaskClick(event) {
     handleTimer(event);
-
-    // let date = new Date();
-    // setSession((prev) => ({
-    //   ...prev,
-    //   startTime: date.toTimeString(),
-    // }));
-
-    // using grid, solves redundant divs so that click can target
-    // either child or parent, no grandchild concern
-
-    const currentTaskIndex =
-      event.target.className == styles.taskItem
-        ? event.target.getAttribute("index")
-        : event.target.parentElement.getAttribute("index");
+    const currentTaskIndex = index;
+    // event.target.className == styles.taskItem
+    //   ? event.target.getAttribute("index")
+    //   : event.target.parentElement.getAttribute("index");
 
     setTaskData((prevTasks) => {
       let modifiedTasks = prevTasks.map(function (item, index) {
@@ -52,19 +38,31 @@ export default function Todo({ task, timer, index, handleTimer, setTaskData }) {
     });
   }
 
+  let loadingStyle = {
+    width: `${task.active && (timer / 25) * 100}%`,
+    background: "lightgreen",
+    height: "2px",
+  };
+
   return (
     <div className={styles.taskItem} index={index} onClick={handleTaskClick}>
       <p className={styles.taskText}>{task.title}</p>
-      <p className={styles.stopWatch}>{task.active && "active"}⏱️</p>
+      <p className={styles.stopWatch}>{task.active && "⏱️"} </p>
+      <div className="loadBar"></div>
+
+      {/* style jsx is next.js feature */}
+      <style jsx>
+        {`
+          .loadBar {
+            width: ${task.active && timer > 0 ? (timer / 25) * 100 : 0}%;
+            background: lightgreen;
+            height: 2px;
+            grid-area: loadBar;
+            transition: width 0.2s ease-in-out;
+          }
+        `}
+      </style>
       {/* <p className={styles.deleteBtn}>❌</p> */}
-      <div
-        className="loadBar"
-        style={{
-          width: `${(task.active && timer / 25) * 100}%`,
-          height: "2px",
-          backgroundColor: "lightgreen",
-        }}
-      ></div>
     </div>
   );
 }

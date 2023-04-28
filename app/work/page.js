@@ -10,49 +10,40 @@ let exampleData = [
 
 import { React, useState, useEffect, use } from "react";
 import Timer from "../components/timer/Timer";
-import Todos from "../components/todos/Todos";
+import Todos from "../components/todos/TodoController";
 import Timeline from "../components/timeline/Timeline";
 
 export default function Work() {
   const [timer, setTimer] = useState(0);
   const [taskData, setTaskData] = useState([]);
-  const [session, setSession] = useState({
-    startTime: "start",
-    endTime: "end",
-  });
 
-  // useEffect(() => {
-  //   let data = JSON.parse(localStorage.getItem("tasks"));
-
-  // }, [0]);
-
+  // console.log("I'm rendered on main:", timer);
+  // console.log("mounted:", localStorage.getItem("monkey_tasks"));
+  // initial setup for localstorage
   useEffect(() => {
-    console.log(taskData);
-    // localStorage.setItem("tasks", JSON.stringify(taskData));
+    let local_data = JSON.parse(localStorage.getItem("monkey_tasks"));
+    !local_data && console.log("effect", "no data");
+    local_data !== []
+      ? setTaskData(local_data)
+      : localStorage.setItem("monkey_tasks", JSON.stringify(taskData));
+  }, []);
+
+  // second setup for every data change
+  useEffect(() => {
+    localStorage.setItem("monkey_tasks", JSON.stringify(taskData));
   }, [taskData]);
 
   function handleTimer(event) {
     event.preventDefault();
+    const userValue = parseInt(document.getElementById("timerInput").value);
+    let counter = 0;
 
-    let date = new Date();
-    setSession((prev) => ({
-      ...prev,
-      startTime: date.toLocaleTimeString("en-US"),
-    }));
-
-    let userValue = document.getElementById("timerInput").value;
-
-    const interval = setInterval(function () {
-      if (userValue > 0) {
-        userValue--;
+    const intervalId = setInterval(function () {
+      if (counter < userValue) {
+        counter++;
         setTimer((prev) => prev + 1);
       } else {
-        clearInterval(interval);
-        let date = new Date();
-        setSession((prev) => ({
-          ...prev,
-          endTime: date.toLocaleTimeString("en-US"),
-        }));
+        clearInterval(intervalId);
         setTimer(0);
       }
     }, 1000);
@@ -67,9 +58,8 @@ export default function Work() {
           handleTimer={handleTimer}
           taskData={taskData}
           setTaskData={setTaskData}
-          session={session}
         />
-        <Timer timer={timer} handleTimer={handleTimer} session={session} />
+        <Timer timer={timer} handleTimer={handleTimer} />
         {/* <Chatbot /> */}
         <div></div>
       </div>

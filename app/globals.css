@@ -101,21 +101,23 @@ a {
 
 /* --header-end--- */
 
+input {
+    border: 1px solid lightgrey
+}
+
 button,
 input {
-
     font-family: inherit;
     font-size: 1em;
     padding: 1em;
-    border: none;
     border-radius: 4px;
-    box-shadow: 0px 1px 3px grey;
     background-color: white;
 }
 
 button {
     font-weight: bolder;
     text-transform: uppercase;
+    border: 1px solid black;
 }
 
 input {
