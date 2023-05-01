@@ -9,7 +9,7 @@ let exampleData = [
 ];
 
 import { React, useState, useEffect, use } from "react";
-import Timer from "../components/timer/Timer";
+import Timer from "../components/timer/TimerController";
 import Todos from "../components/todos/TodoController";
 import Timeline from "../components/timeline/Timeline";
 
@@ -17,9 +17,8 @@ export default function Work() {
   const [timer, setTimer] = useState(0);
   const [taskData, setTaskData] = useState([]);
 
-  // console.log("I'm rendered on main:", timer);
-  // console.log("mounted:", localStorage.getItem("monkey_tasks"));
-  // initial setup for localstorage
+  console.table(taskData);
+
   useEffect(() => {
     let local_data = JSON.parse(localStorage.getItem("monkey_tasks"));
     !local_data && console.log("effect", "no data");
@@ -44,6 +43,11 @@ export default function Work() {
         setTimer((prev) => prev + 1);
       } else {
         clearInterval(intervalId);
+        setTaskData((prev) => {
+          let newData = prev.map((item) => ({ ...item, active: false }));
+          console.log(newData);
+          setTaskData(newData);
+        });
         setTimer(0);
       }
     }, 1000);

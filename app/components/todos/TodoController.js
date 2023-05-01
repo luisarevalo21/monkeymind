@@ -12,12 +12,13 @@ export default function TodoController({
 }) {
   const [taskInput, setTaskInput] = useState("");
 
-  function handleClick(event) {
+  function handleTaskClick(event) {
     if (taskInput !== "") {
       setTaskData((prevTasks) => [
         {
           title: taskInput,
           active: false,
+          progress: 0,
           sessions: [
             {
               session_id: "0",
@@ -44,8 +45,8 @@ export default function TodoController({
         <Todo
           key={index}
           task={task}
-          timer={timer}
           index={index}
+          timer={timer}
           handleTimer={handleTimer}
           setTaskData={setTaskData}
         />
@@ -64,7 +65,7 @@ export default function TodoController({
           value={taskInput}
           onChange={handleInputChange}
         />
-        <button className={styles.taskSubmitBtn} onClick={handleClick}>
+        <button className={styles.taskSubmitBtn} onClick={handleTaskClick}>
           +
         </button>
       </div>

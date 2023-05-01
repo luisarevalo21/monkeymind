@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Space_Grotesk } from "next/font/google";
 import { Karla } from "next/font/google";
-import Timer from "./components/timer/Timer";
+import Timer from "./components/timer/TimerController";
 import Todo from "./components/todos/TodoController";
 import Timeline from "./components/timeline/Timeline";
 import Work from "./work/page";

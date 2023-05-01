@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "./timer.module.css";
 
-function Timer({ timer, handleTimer, session }) {
+function Timer({ timer, handleTimer }) {
   return (
     <div className={`container ${styles.timer}`}>
       <p className={styles.counter}>{timer}</p>
@@ -15,17 +15,18 @@ function Timer({ timer, handleTimer, session }) {
           id="timerInput"
           className={styles.input}
         />
+        <button className={`button ${styles.startBtn}`} onClick={handleTimer}>
+          Start
+        </button>
+
         <label>
           Pick a time period:
-          <select name="selectedFruit">
+          <select id="sessionPeriod " name="sessionPeriod">
             <option value="25">25</option>
             <option value="40">40</option>
             <option value="50">50</option>
           </select>
         </label>
-        <button className={`button ${styles.startBtn}`} onClick={handleTimer}>
-          Start
-        </button>
       </form>
     </div>
   );
