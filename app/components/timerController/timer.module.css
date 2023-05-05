@@ -1,0 +1,49 @@
+.component {
+    grid-area: timer;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    justify-content: flex-start;
+    padding: 1em;
+    width: 50%;
+}
+
+.userInputs {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 1em 0;
+    gap: 1em;
+}
+
+.counter {
+    font-size: 6em;
+    padding: 1rem;
+}
+
+.startBtn {
+    width: 100%;
+}
+
+.enterDuration {
+    width: 50%;
+}
+
+.selectDuration {
+    width: 50%;
+}
+
+.userInput {
+    margin: 0px;
+}
+
+.dropdown {
+    font-family: inherit;
+    font-size: 1em;
+    padding: 1em;
+    border-radius: 4px;
+    background-color: white;
+    border: 1px solid black;
+    box-shadow: 2px 2px 0px rgba(0, 0, 0);
+    transition: box-shadow 0.2s ease-in-out;
+}
