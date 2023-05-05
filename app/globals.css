@@ -5,6 +5,13 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+}
+
+:root {
+    --myblack: #202124;
+    --mygreen: lightseagreen;
+    --myred: lightcoral;
 }
 
 html,
@@ -23,7 +30,7 @@ body {
 main {
     display: flex;
     flex-direction: column;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     min-height: 100vh;
     padding: 1em;
@@ -38,10 +45,6 @@ main {
 
 }
 
-.modern-look {
-    border: 1px solid black;
-    box-shadow: 4px 4px 0px grey;
-}
 
 .haiku {
     margin: 0px auto;
@@ -56,7 +59,7 @@ main {
 header {
     display: flex;
     flex-direction: row;
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     height: 6em;
     justify-content: space-between;
@@ -105,6 +108,7 @@ input {
     border: 1px solid lightgrey
 }
 
+
 button,
 input {
     font-family: inherit;
@@ -112,29 +116,33 @@ input {
     padding: 1em;
     border-radius: 4px;
     background-color: white;
-    border: 1px solid black;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0);
+    border: 1px solid var(--myblack);
+    box-shadow: 2px 2px 0px var(--myblack);
     transition: box-shadow 0.2s ease-in-out;
 }
 
-input:focus {
-    border: 1px solid red
-}
 
 button {
     font-weight: bolder;
     text-transform: uppercase;
+    background: var(--mygreen);
+    color: white;
 
 }
 
 .button:hover {
-    box-shadow: 0px 4px 0px rgba(0, 0, 0);
+    box-shadow: 5px 5px 0px, var(--myblack);
 
 }
 
 input {
     width: 100%;
     margin: 1em auto;
+    border: 1px solid var(--myblack);
+}
+
+input:focus {
+    outline-color: var(--myblack);
 }
 
 .hero {
@@ -198,7 +206,7 @@ footer {
     /* width: 100%; */
     padding: 2em;
     min-height: 5em;
-    background: #202020;
+    background: var(--myblack);
     text-align: center;
 
 }

@@ -1,12 +1,54 @@
 import { React, useState, useEffect } from "react";
 import styles from "./todos.module.css";
 
-export default function Todo({ task, timer, index, handleTimer, setTaskData }) {
+export default function Todo({ task, timer, handleTimer, setTaskData }) {
+  // task.active && console.log(timer);
+
+  const [counter, setCounter] = useState(0);
+  const [active, setActive] = useState(false);
+
+  // updating the state out of setInterval doesn't work since
+  // the value of count stays same as the initial value
+  // this happens because of closure
+  // https://itnext.io/how-to-work-with-intervals-in-react-hooks-f29892d650f2
+
   function handleTaskClick(event) {
-    handleTimer(event);
+    // handleTimer(event);
+
+    //👇 this gets into the closure
+    let intervalCounter = 0;
+
+    const taskInterval = setInterval(() => {
+      if (intervalCounter < 5) {
+        intervalCounter++;
+        setCounter((prev) => prev + 1);
+      } else {
+        clearInterval(taskInterval);
+        //👇  when finished update the session-end time
+        setTaskData((prevTasks) => {
+          let modifiedTasks = prevTasks.map(function (item) {
+            if (item.id == task.id) {
+              let date = new Date();
+              let currentSession = item.sessions[item.sessions.length - 1];
+              currentSession.end_time = date.toLocaleTimeString("en-US");
+
+              return {
+                ...item,
+                active: false,
+                sessions: [...item.sessions, { ...currentSession }],
+              };
+            } else {
+              return item;
+            }
+          });
+          return modifiedTasks;
+        });
+      }
+    }, 1000);
+
     setTaskData((prevTasks) => {
-      let modifiedTasks = prevTasks.map(function (item, mapIndex) {
-        if (index == mapIndex) {
+      let modifiedTasks = prevTasks.map(function (item) {
+        if (item.id == task.id) {
           let date = new Date();
           return {
             ...item,
@@ -16,7 +58,6 @@ export default function Todo({ task, timer, index, handleTimer, setTaskData }) {
               {
                 session_id: item.sessions.length++,
                 start_time: date.toLocaleTimeString("en-US"),
-                end_time: "-",
               },
             ],
           };
@@ -37,22 +78,16 @@ export default function Todo({ task, timer, index, handleTimer, setTaskData }) {
     height: "3px",
   };
 
+  // let bananas = task.sessions.map(() => "🍌");
+
   return (
-    <div className={styles.taskItem} index={index} onClick={handleTaskClick}>
+    <div className={styles.taskItem} onClick={handleTaskClick}>
       <p className={styles.taskText}>{task.title}</p>
-      <p className={styles.stopWatch}>{task.active && "⏱️"} </p>
-      <p className="loadBar" style={{ ...loadBarStyle }}>
-        {/* <style jsx>
-          {`
-            .loadBar {
-              width: ${(task.active && timer / 25) * 100}%;
-              background: lightgreen;
-              height: 2px;
-            }
-          `}
-        </style> */}
+      <p className={styles.sessionInfo}></p>
+      <p className={styles.stopWatch}>
+        {task.active && "⏱️"} {counter}
       </p>
-      {/* <p className={styles.deleteBtn}>❌</p> */}
+      <p className="loadBar" style={{ ...loadBarStyle }}></p>
     </div>
   );
 }

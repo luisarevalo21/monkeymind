@@ -1,17 +1,10 @@
 "use client";
 
-let exampleData = [
-  {
-    title: "Example task",
-    active: false,
-    sessions: [],
-  },
-];
-
 import { React, useState, useEffect, use } from "react";
-import Timer from "../components/timer/TimerController";
+import Timer from "../components/timerController/TimerController";
 import Todos from "../components/todos/TodoController";
 import Timeline from "../components/timeline/Timeline";
+import Chatbot from "../components/chatbot/Chatbot";
 
 export default function Work() {
   const [timer, setTimer] = useState(0);
@@ -36,7 +29,6 @@ export default function Work() {
     event.preventDefault();
     const userValue = parseInt(document.getElementById("timerInput").value);
     let counter = 0;
-
     const intervalId = setInterval(function () {
       if (counter < userValue) {
         counter++;
@@ -45,7 +37,6 @@ export default function Work() {
         clearInterval(intervalId);
         setTaskData((prev) => {
           let newData = prev.map((item) => ({ ...item, active: false }));
-          console.log(newData);
           setTaskData(newData);
         });
         setTimer(0);
@@ -63,8 +54,9 @@ export default function Work() {
           taskData={taskData}
           setTaskData={setTaskData}
         />
+
         <Timer timer={timer} handleTimer={handleTimer} />
-        {/* <Chatbot /> */}
+        <Chatbot />
         <div></div>
       </div>
     </main>

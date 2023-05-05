@@ -12,20 +12,16 @@ export default function TodoController({
 }) {
   const [taskInput, setTaskInput] = useState("");
 
-  function handleTaskClick(event) {
+  function handleTaskSubmit(event) {
     if (taskInput !== "") {
       setTaskData((prevTasks) => [
         {
+          id: prevTasks.length + 1,
           title: taskInput,
           active: false,
+          resources: [],
           progress: 0,
-          sessions: [
-            {
-              session_id: "0",
-              start_time: "-",
-              end_time: "-",
-            },
-          ],
+          sessions: [],
         },
         ...prevTasks,
       ]);
@@ -38,12 +34,20 @@ export default function TodoController({
     setTaskInput(event.target.value);
   }
 
+  function handleDeleteAll(event) {
+    setTaskData([]);
+  }
+
+  function handleShareAll(event) {
+    alert("select a friend");
+  }
+
   let taskElements =
     taskData &&
     taskData.map(function (task, index) {
       return (
         <Todo
-          key={index}
+          key={task.id}
           task={task}
           index={index}
           timer={timer}
@@ -65,11 +69,19 @@ export default function TodoController({
           value={taskInput}
           onChange={handleInputChange}
         />
-        <button className={styles.taskSubmitBtn} onClick={handleTaskClick}>
+        <button className={styles.taskSubmitBtn} onClick={handleTaskSubmit}>
           +
         </button>
       </div>
       <div className={styles.tasks}>{taskElements}</div>
+      <div className={styles.actionBtns}>
+        <button className={styles.deleteAll} onClick={handleDeleteAll}>
+          Delete all
+        </button>
+        <button className={styles.shareAll} onClick={handleShareAll}>
+          Share tasks
+        </button>
+      </div>
     </div>
   );
 }

@@ -12,8 +12,11 @@
     width: 100%;
 }
 
+.taskInput {
+    /* box-shadow: 0px 1px 1px grey; */
+    outline-color: var(--myred);
+}
 
-.taskInput,
 .taskSubmitBtn,
 .taskItem {
     font-family: inherit;
@@ -26,15 +29,16 @@
 }
 
 .taskItem {
-    border: 1px solid black;
-    box-shadow: 2px 2px 0px rgba(0, 0, 0);
+    border: 1px solid var(--myblack);
+    box-shadow: 2px 2px 0px var(--myblack);
     transition: box-shadow 0.2s ease-in-out;
 }
-
 
 .taskSubmitBtn {
     margin: 0 0 0 0.5em;
     height: 100%;
+    background-color: var(--mygreen);
+    color: white;
 }
 
 .taskInputContainer {
@@ -46,20 +50,19 @@
 .taskItem {
     display: grid;
     width: 100%;
-    grid-template-columns: 5fr 1fr;
-    grid-template-rows: 1.2em 2px;
+    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-rows: minmax(1.5em, auto) 2px;
     grid-template-areas:
-        "taskText stopWatch"
-        "loadBar loadBar";
+        "taskText sessions stopWatch"
+        "loadBar loadBar loadbar";
     align-items: center;
 
 }
 
-.taskInput:hover,
+
 .taskItem:hover,
 .taskSubmitBtn:hover {
-    box-shadow: 4px 4px 0px rgba(0, 0, 0);
-
+    box-shadow: 4px 4px 0px var(--myblack);
 }
 
 .taskText {
@@ -76,4 +79,27 @@
 .stopWatch {
     grid-area: stopWatch;
     text-align: right;
+}
+
+.sessionInfo {
+    grid-area: sessions;
+
+}
+
+.deleteAll {
+    width: 50%;
+    background-color: var(--myred);
+    color: white;
+
+}
+
+.shareAll {
+    width: 50%;
+}
+
+.actionBtns {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1em;
 }
