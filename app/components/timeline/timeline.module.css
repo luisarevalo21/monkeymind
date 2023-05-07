@@ -1,14 +1,53 @@
-.timeline {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
+.component {
     padding: 1em;
-    margin-bottom: 1em;
+    margin: 1em;
     border-radius: 4px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3em auto 3em;
+    grid-template-areas:
+        "sun intervals moon";
+    gap: 0.5em;
+    box-shadow: rgb(223, 222, 222) 0px 0px 6px 1px inset;
+}
+
+
+.intervalContainer {
+    grid-area: intervals;
+    text-align: center;
+
+}
+
+.intervalSlot {
+    display: inline-block;
+    max-width: 2.4em;
 }
 
 .sun,
 .moon {
     font-size: 1.5em;
+    align-self: center;
+}
+
+.sun {
+    grid-area: sun;
+    justify-self: start;
+
+}
+
+.moon {
+    grid-area: moon;
+    justify-self: end;
+}
+
+.intervalHour {
+    display: inline-block;
+    font-size: x-small;
+    padding: 0.8em;
+    color: lightgray;
+}
+
+.dots {
+    display: inline-block;
+    color: lightgray;
 }

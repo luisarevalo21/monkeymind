@@ -10,8 +10,6 @@ export default function Work() {
   const [timer, setTimer] = useState(0);
   const [taskData, setTaskData] = useState([]);
 
-  console.table(taskData);
-
   useEffect(() => {
     let local_data = JSON.parse(localStorage.getItem("monkey_tasks"));
     !local_data && console.log("effect", "no data");
@@ -54,7 +52,6 @@ export default function Work() {
           taskData={taskData}
           setTaskData={setTaskData}
         />
-
         <Timer timer={timer} handleTimer={handleTimer} />
         <Chatbot />
         <div></div>

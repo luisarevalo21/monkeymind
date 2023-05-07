@@ -4,17 +4,20 @@ import { React, useState } from "react";
 import styles from "./timer.module.css";
 
 function Timer({ timer, handleTimer }) {
-  const [sessionDuration, setSessionDuration] = useState("Select");
+  const [sessionDuration, setSessionDuration] = useState("25");
 
   function handleSelect(event) {
+    console.log(event.target);
     setSessionDuration(event.target.value);
   }
+
   return (
     <div className={`container ${styles.component}`}>
+      <p>Set session period</p>
       <p className={styles.counter}>{timer}</p>
-      <p>Enter session duration or select</p>
       <div className={styles.userInputs}>
         <form className={styles.enterDuration}>
+          Custom
           <input
             type="number"
             placeholder="Work period"
@@ -23,23 +26,21 @@ function Timer({ timer, handleTimer }) {
           />
         </form>
         <label className={styles.selectDuration}>
+          Select
           <select
             className={styles.dropdown}
             id="sessionDuration"
             name="sessionDuration"
-            value={sessionDuration}
             onChange={handleSelect}
+            value={sessionDuration}
           >
-            <option value="">Select</option>
             <option value="25">25</option>
             <option value="40">40</option>
             <option value="50">50</option>
           </select>
         </label>
       </div>
-      <button className={`button ${styles.startBtn}`} onClick={handleTimer}>
-        Start
-      </button>
+      <button onClick={handleTimer}>Start</button>
     </div>
   );
 }

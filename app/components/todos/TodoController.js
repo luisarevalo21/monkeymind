@@ -1,8 +1,8 @@
 "use client";
 
 import { React, useState, useEffect } from "react";
-import Todo from "./Todo.js";
-import styles from "./todos.module.css";
+import Todo from "../todo/Todo.js";
+import styles from "./todoController.module.css";
 
 export default function TodoController({
   timer,
@@ -58,7 +58,7 @@ export default function TodoController({
     });
 
   return (
-    <div className={`container ${styles.componentWrapper}`}>
+    <div className={`container ${styles.component}`}>
       <p>Todos</p>
       <div className={styles.taskInputContainer}>
         <input

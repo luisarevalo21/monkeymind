@@ -42,7 +42,6 @@ main {
     gap: 1em;
     align-items: flex-start;
     justify-content: space-around;
-
 }
 
 
@@ -126,14 +125,14 @@ button {
     font-weight: bolder;
     text-transform: uppercase;
     background: var(--mygreen);
-    color: white;
+    color: var(--myblack);
 
 }
 
-.button:hover {
-    box-shadow: 5px 5px 0px, var(--myblack);
-
+button:hover {
+    box-shadow: 5px 5px 0px var(--myblack);
 }
+
 
 input {
     width: 100%;
@@ -143,6 +142,10 @@ input {
 
 input:focus {
     outline-color: var(--myblack);
+}
+
+input:hover {
+    box-shadow: 3px 3px 0px var(--myblack);
 }
 
 .hero {
