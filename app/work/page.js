@@ -44,7 +44,7 @@ export default function Work() {
 
   return (
     <main>
-      <Timeline timer={timer} />
+      <Timeline taskData={taskData} />
       <div className="taskControl">
         <Todos
           timer={timer}
@@ -54,7 +54,6 @@ export default function Work() {
         />
         <Timer timer={timer} handleTimer={handleTimer} />
         <Chatbot />
-        <div></div>
       </div>
     </main>
   );

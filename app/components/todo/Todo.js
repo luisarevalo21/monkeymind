@@ -3,40 +3,70 @@ import styles from "./todo.module.css";
 
 export default function Todo({ task, timer, handleTimer, setTaskData }) {
   // task.active && console.log(timer);
+  // drive = streak = 4 * work session in a row
 
   const [counter, setCounter] = useState(0);
   const [active, setActive] = useState(false);
+  const driveLimit = 4;
 
-  // updating the state out of setInterval doesn't work since
-  // the value of count stays same as the initial value
-  // this happens because of closure
-  // https://itnext.io/how-to-work-with-intervals-in-react-hooks-f29892d650f2
+  function findTimeDelta(next, prev) {
+    return prev ? Date.parse(next) - Date.parse(prev) : "No break";
+  }
+
+  console.log(task.sessions[task.sessions.length - 1]);
+  // if (task.sessions.length > 1) {
+  //   const deltas = task.sessions.map((session, index) => {
+  //     return index != task.sessions.length - 1
+  //       ? findTimeDelta(task.sessions[index + 1].start_date, session.end_date)
+  //       : "last session is going on";
+  //   });
+
+  //   const bananaBreaks = deltas.map((delta, index) => {
+  //     return delta < 5000 ? "banana" : "-";
+  //   });
+  //   console.log(bananaBreaks);
+  // }
 
   function handleTaskClick(event) {
     // handleTimer(event);
+    setActive(true);
+
+    const currentSessionStart = Date();
+    const prevSessionEnd =
+      task.sessions.length > 1
+        ? task.sessions[task.sessions.length - 1].end_date
+        : null;
+
+    const currentSession = {
+      start_date: currentSessionStart,
+      end_date: "Ongoing...",
+      break: findTimeDelta(currentSessionStart, prevSessionEnd),
+      shortBreak:
+        findTimeDelta(currentSessionStart, prevSessionEnd) < 5000
+          ? true
+          : false,
+    };
 
     //👇 this gets into the closure
     let intervalCounter = 0;
     const userValue = parseInt(document.getElementById("timerInput").value);
-
     const taskInterval = setInterval(() => {
       if (intervalCounter < userValue) {
         intervalCounter++;
         setCounter((prev) => prev + 1);
       } else {
         clearInterval(taskInterval);
+        setActive(false);
+
         //👇  when finished update the session-end time
         setTaskData((prevTasks) => {
           let modifiedTasks = prevTasks.map(function (item) {
             if (item.id == task.id) {
-              let date = new Date();
               let currentSession = item.sessions[item.sessions.length - 1];
-              currentSession.end_time = date.toLocaleTimeString("en-US");
-
+              currentSession.end_date = Date();
               return {
                 ...item,
                 active: false,
-                sessions: [...item.sessions, { ...currentSession }],
               };
             } else {
               return item;
@@ -49,32 +79,23 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
 
     setTaskData((prevTasks) => {
       let modifiedTasks = prevTasks.map(function (item) {
-        if (item.id == task.id) {
-          let date = new Date();
-          return {
-            ...item,
-            active: true,
-            sessions: [
-              ...item.sessions,
-              {
-                session_id: item.sessions.length++,
-                start_time: date.toLocaleTimeString("en-US"),
-              },
-            ],
-          };
-        } else {
-          return {
-            ...item,
-            active: false,
-          };
-        }
+        return item.id == task.id
+          ? {
+              ...item,
+              active: true,
+              sessions: [...item.sessions, currentSession],
+            }
+          : {
+              ...item,
+              active: false,
+            };
       });
       return modifiedTasks;
     });
   }
 
   const loadBarStyle = {
-    width: task.active ? `${(timer / 25) * 100}%` : "100%",
+    width: task.active ? `${(counter / 25) * 100}%` : "100%",
     background: task.active ? "lightgreen" : "white",
     height: "3px",
   };
@@ -88,6 +109,7 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
       <p className={styles.stopWatch}>
         {task.active && "⏱️"} {counter}
       </p>
+      {active}
       <p className="loadBar" style={{ ...loadBarStyle }}></p>
     </div>
   );
