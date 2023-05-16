@@ -1,3 +1,4 @@
+
 .component {
     grid-area: todo;
     display: flex;
@@ -12,10 +13,6 @@
     width: 100%;
 }
 
-.taskInput {
-    /* box-shadow: 0px 1px 1px grey; */
-    outline-color: var(--myred);
-}
 
 .taskSubmitBtn {
     font-family: inherit;
@@ -31,6 +28,7 @@
     margin: 0 0 0 0.5em;
     height: 100%;
     background-color: var(--mygreen);
+    border:none;
     color: white;
 }
 
@@ -41,13 +39,14 @@
 }
 
 .taskSubmitBtn:hover {
-    box-shadow: 4px 4px 0px var(--myblack);
+    box-shadow: 0px 4px 0px gray;
+
 }
 
 
 .deleteBtn {
     font-size: 0.75em;
-    text-shadow: 0px 1px 1px grey;
+    text-shadow: 0px 2px 0px grey;
     grid-area: deleteBtn;
     text-align: right;
 }
@@ -62,6 +61,7 @@
 }
 
 .actionBtns {
+    margin-top:1em;
     display: flex;
     flex-direction: row;
     justify-content: space-around;

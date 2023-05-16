@@ -2,7 +2,7 @@
 
 import { React, useState, useEffect } from "react";
 import Todo from "../todo/Todo.js";
-import styles from "./todoController.module.css";
+import styles from "./todoController.module.scss";
 
 export default function TodoController({
   timer,

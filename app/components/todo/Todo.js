@@ -1,50 +1,37 @@
 import { React, useState, useEffect } from "react";
-import styles from "./todo.module.css";
+import styles from "./todo.module.scss";
 
 export default function Todo({ task, timer, handleTimer, setTaskData }) {
   // task.active && console.log(timer);
   // drive = streak = 4 * work session in a row
 
+  console.log(task.sessions);
   const [counter, setCounter] = useState(0);
   const [active, setActive] = useState(false);
   const driveLimit = 4;
 
   function findTimeDelta(next, prev) {
-    return prev ? Date.parse(next) - Date.parse(prev) : "No break";
+    return prev ? next - prev : "Beginning";
   }
-
-  console.log(task.sessions[task.sessions.length - 1]);
-  // if (task.sessions.length > 1) {
-  //   const deltas = task.sessions.map((session, index) => {
-  //     return index != task.sessions.length - 1
-  //       ? findTimeDelta(task.sessions[index + 1].start_date, session.end_date)
-  //       : "last session is going on";
-  //   });
-
-  //   const bananaBreaks = deltas.map((delta, index) => {
-  //     return delta < 5000 ? "banana" : "-";
-  //   });
-  //   console.log(bananaBreaks);
-  // }
 
   function handleTaskClick(event) {
     // handleTimer(event);
+
     setActive(true);
 
-    const currentSessionStart = Date();
+    const currentSessionStart = Date.now();
     const prevSessionEnd =
-      task.sessions.length > 1
+      task.sessions.length > 0
         ? task.sessions[task.sessions.length - 1].end_date
         : null;
 
+    const delta = findTimeDelta(currentSessionStart, prevSessionEnd);
+
     const currentSession = {
       start_date: currentSessionStart,
-      end_date: "Ongoing...",
-      break: findTimeDelta(currentSessionStart, prevSessionEnd),
-      shortBreak:
-        findTimeDelta(currentSessionStart, prevSessionEnd) < 5000
-          ? true
-          : false,
+      end_date: "ongoing session...",
+      prev_break: delta,
+      prev_break_short: delta < 5000 ? true : false,
     };
 
     //👇 this gets into the closure
@@ -63,7 +50,7 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
           let modifiedTasks = prevTasks.map(function (item) {
             if (item.id == task.id) {
               let currentSession = item.sessions[item.sessions.length - 1];
-              currentSession.end_date = Date();
+              currentSession.end_date = Date.now();
               return {
                 ...item,
                 active: false,
@@ -97,7 +84,7 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
   const loadBarStyle = {
     width: task.active ? `${(counter / 25) * 100}%` : "100%",
     background: task.active ? "lightgreen" : "white",
-    height: "3px",
+    height: "1px",
   };
 
   // let bananas = task.sessions.map(() => "🍌");

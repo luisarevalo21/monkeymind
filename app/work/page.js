@@ -2,7 +2,7 @@
 
 import { React, useState, useEffect, use } from "react";
 import Timer from "../components/timerController/TimerController";
-import Todos from "../components/todos/TodoController";
+import Todos from "../components/todoController/TodoController";
 import Timeline from "../components/timeline/Timeline";
 import Chatbot from "../components/chatbot/Chatbot";
 

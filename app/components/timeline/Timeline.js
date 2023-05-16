@@ -1,43 +1,57 @@
-import { useEffect } from "react";
 import React from "react";
 import styles from "./timeline.module.css";
 import Link from "next/link";
+import { getFontDefinitionFromNetwork } from "next/dist/server/font-utils";
 
 export default function Timeline({ taskData }) {
-  const hourIntervals = [];
-
-  const sessionEnds = taskData.map((item) => {
-    return item.sessions.map((session) => session.end_time);
-  });
+  const timeLabels = [];
+  const timeSlots = [];
 
   for (let i = 0; i < 25; i++) {
-    i < 10
-      ? hourIntervals.push("0" + i + ":00")
-      : hourIntervals.push(i + ":00");
-    // halfHourIntervals.push(i + ":30");
+    i < 10 ? timeLabels.push("0" + i + ":00") : timeLabels.push(i + ":00");
+    // halftimeLabels.push(i + ":30");
+    timeSlots.push("·");
   }
 
-  const halfHourElements = hourIntervals.map((item, index) => {
-    return (
-      <div className={styles.intervalSlot} key={index}>
-        <p className={styles.intervalHour}>{item}</p>
-        <p className={styles.dots}>·</p>
-      </div>
-    );
+  const allSessions = taskData.reduce((concatenated, item) => {
+    return concatenated.concat(item.sessions);
+  }, []);
+
+  const endHours = allSessions.map((item) => {
+    const fullDate = new Date(item.end_date);
+    return Math.floor((fullDate.getSeconds() / 60) * 24);
   });
+
+  const timeLabelElements = timeLabels.map((item, index) => (
+    <p className={styles.timeLabel} key={index}>
+      {item}
+    </p>
+  ));
+
+  const timeSlotElements = timeSlots.map((item, index) => (
+    <p className={styles.timeSlot} key={index}>
+      {endHours.includes(index) ? "🍌" : item}
+    </p>
+  ));
 
   return (
     <div className={styles.component}>
       <nav className={styles.selectTimeScope}>
-        <Link href="/#">Day</Link>
+        <Link href="/#">Today</Link>
         <Link href="/#">Week</Link>
       </nav>
 
       <div className={`container ${styles.dailyScope}`}>
+        <div className={styles.sun}>🛏️</div>
+        <div className={styles.timeLabels}>{timeLabelElements}</div>
+        <div className={styles.timeSlots}>{timeSlotElements}</div>
+        <div className={styles.moon}>🌞</div>
+      </div>
+      {/* <div className={`container ${styles.dailyScope}`}>
         <div className={styles.sun}>🌞</div>
         <div className={styles.intervalContainer}>{halfHourElements}</div>
         <div className={styles.moon}>🌛</div>
-      </div>
+      </div> */}
     </div>
   );
 }

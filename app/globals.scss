@@ -5,13 +5,47 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 :root {
     --myblack: #202124;
     --mygreen: lightseagreen;
     --myred: lightcoral;
+    --shadow: lightgrey;
+    --hover-shadow : grey;
+    --hover-border : #202124;
+    --border:  lightgrey;  
+}
+
+@mixin neubrutal{
+    box-shadow: 0px 2px 0px var(--shadow);
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid var(--border);
+}
+
+
+@mixin neubrutal{
+    box-shadow: 0px 2px 0px var(--shadow);
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid var(--border);
+}
+
+@mixin neubrutal-hover{
+    box-shadow: 0px 4px 0px var(--hover-shadow);
+    border: 1px solid var(--hover-border);
+}
+
+
+@mixin minimal{
+    box-shadow: 0px 1px 2px gray;
+    background: white;
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid black;
+    border: inset none;
+}
+
+@mixin minimal-hover{
+    box-shadow: 0px 2px 5px gray;
 }
 
 html,
@@ -21,9 +55,8 @@ body {
     min-width: 300px;
 }
 
-body {
-    /* background: #E5E7EB;    */
-    /* font-family: 'Space Grotesk', sans-serif; */
+body { 
+
     font-family: 'Karla', sans-serif;
 }
 
@@ -44,15 +77,9 @@ main {
     justify-content: space-around;
 }
 
-
 .haiku {
     margin: 0px auto;
 }
-
-/* grid-structure */
-/* caveat 1: use no quotes while assigning area names to grid-area */
-/* caveat 2: a grid parent only affects its own child elements, not the grand-children, solution is to nest another grid inside the child element */
-
 
 /* - header-start -  */
 header {
@@ -103,105 +130,38 @@ a {
 
 /* --header-end--- */
 
-input {
-    border: 1px solid lightgrey
-}
-
-
 button,
 input {
+    @include neubrutal();
     font-family: inherit;
     font-size: 1em;
     padding: 1em;
     border-radius: 4px;
     background-color: white;
-    border: 1px solid var(--myblack);
-    box-shadow: 2px 2px 0px var(--myblack);
-    transition: box-shadow 0.2s ease-in-out;
 }
 
+input:hover,
+button:hover {
+    @include neubrutal-hover()
+}
 
 button {
     font-weight: bolder;
     text-transform: uppercase;
     background: var(--mygreen);
     color: var(--myblack);
-
 }
-
-button:hover {
-    box-shadow: 5px 5px 0px var(--myblack);
-}
-
 
 input {
     width: 100%;
     margin: 1em auto;
-    border: 1px solid var(--myblack);
 }
+
 
 input:focus {
-    outline-color: var(--myblack);
+    outline-color: var(--mygreen);
 }
 
-input:hover {
-    box-shadow: 3px 3px 0px var(--myblack);
-}
-
-.hero {
-    min-height: 500px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    color: white;
-    background: url("../public/monkey.png")
-}
-
-.hero-title {
-    margin: auto 0;
-    padding-left: 2em;
-}
-
-.posts {
-    padding: 1em;
-    margin: 0 auto;
-}
-
-.post-preview {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: left;
-    background: white;
-    border-radius: 4px;
-    margin-bottom: 1em;
-    box-shadow: 0px 1px 3px grey;
-}
-
-.post-img {
-    width: 100%;
-    max-height: 150px;
-    object-fit: cover;
-    border-radius: 5px 5px 0 0;
-}
-
-.post-date {
-    margin-bottom: 0.3em;
-}
-
-.post-title {
-    margin-bottom: 0.3em;
-}
-
-.post-info {
-    padding: 1em;
-    flex-direction: column;
-    justify-content: space-around;
-    display: flex;
-}
-
-.readMore {
-    padding: 0 1em 1em;
-}
 
 footer {
     grid-area: footer;
