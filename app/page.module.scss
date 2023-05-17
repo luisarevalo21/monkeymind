@@ -1,0 +1,29 @@
+@mixin neubrutal{
+    box-shadow: 0px 2px 0px var(--shadow);
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid var(--border);
+}
+
+@mixin neubrutal{
+    box-shadow: 0px 2px 0px var(--shadow);
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid var(--border);
+}
+
+@mixin neubrutal-hover{
+    box-shadow: 0px 4px 0px var(--hover-shadow);
+    border: 1px solid var(--hover-border);
+}
+
+
+@mixin minimal{
+    box-shadow: 0px 1px 2px gray;
+    background: white;
+    transition: box-shadow 0.2s ease-in-out;
+    border: 1px solid black;
+    border: inset none;
+}
+
+@mixin minimal-hover{
+    box-shadow: 0px 2px 5px gray;
+}

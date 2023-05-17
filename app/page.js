@@ -9,14 +9,12 @@ import Timeline from "./components/timeline/Timeline";
 import Work from "./work/page";
 // import Chatbot from "./components/chatbot/Chatbot";
 
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 import { useState } from "react";
 
 // const font = Space_Grotesk({ subsets: ["latin"] });
 
 export default function Home() {
-  const [timer, setTimer] = useState(0);
-
   return (
     <main>
       <Work />

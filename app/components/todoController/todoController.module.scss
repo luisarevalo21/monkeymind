@@ -13,36 +13,28 @@
     width: 100%;
 }
 
-
-.taskSubmitBtn {
-    font-family: inherit;
-    font-size: 1rem;
-    border-radius: 4px;
-    padding: 1em;
-    margin-bottom: 0.5em;
-    /* border: 1px solid black; */
-}
-
-
-.taskSubmitBtn {
-    margin: 0 0 0 0.5em;
-    height: 100%;
-    background-color: var(--mygreen);
-    border:none;
-    color: white;
-}
-
 .taskInputContainer {
     display: flex;
     flex-direction: row;
     align-items: baseline;
 }
 
-.taskSubmitBtn:hover {
-    box-shadow: 0px 4px 0px gray;
-
+.taskSubmitBtn {
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 4px;
+    padding: 1em;
+    margin-left: 0.5em;
+    height: 100%;
+    background-color: var(--mygreen);
+    border: 1px solid lightseagreen;
+    color: white;
 }
 
+.taskSubmitBtn:hover {
+    box-shadow: 0px 4px 0px seagreen;
+    border: 1px solid seagreen;
+}
 
 .deleteBtn {
     font-size: 0.75em;
