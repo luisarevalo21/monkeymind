@@ -1,6 +1,6 @@
 "use client";
 
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import Todo from "../todo/Todo.js";
 import styles from "./todoController.module.scss";
 
@@ -9,6 +9,7 @@ export default function TodoController({
   handleTimer,
   taskData,
   setTaskData,
+  sessionDuration,
 }) {
   const [taskInput, setTaskInput] = useState("");
 
@@ -50,9 +51,8 @@ export default function TodoController({
           key={task.id}
           task={task}
           index={index}
-          timer={timer}
-          handleTimer={handleTimer}
           setTaskData={setTaskData}
+          sessionDuration={sessionDuration}
         />
       );
     });

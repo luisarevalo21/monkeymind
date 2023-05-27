@@ -1,14 +1,15 @@
 "use client";
 
 import { React, useState, useEffect, use } from "react";
-import Timer from "../components/timerController/TimerController";
-import Todos from "../components/todoController/TodoController";
+import TimerController from "../components/timerController/TimerController";
+import TodoController from "../components/todoController/TodoController";
 import Timeline from "../components/timeline/Timeline";
 import Chatbot from "../components/chatbot/Chatbot";
 
 export default function Work() {
   const [timer, setTimer] = useState(0);
   const [taskData, setTaskData] = useState([]);
+  const [sessionDuration, setSessionDuration] = useState(25);
 
   useEffect(() => {
     let local_data = JSON.parse(localStorage.getItem("monkey_tasks"));
@@ -46,13 +47,19 @@ export default function Work() {
     <main>
       <Timeline taskData={taskData} />
       <div className="taskControl">
-        <Todos
+        <TodoController
           timer={timer}
           handleTimer={handleTimer}
           taskData={taskData}
           setTaskData={setTaskData}
+          sessionDuration={sessionDuration}
         />
-        <Timer timer={timer} handleTimer={handleTimer} />
+        <TimerController
+          timer={timer}
+          handleTimer={handleTimer}
+          setSessionDuration={setSessionDuration}
+          sessionDuration={sessionDuration}
+        />
         <Chatbot />
       </div>
     </main>

@@ -1,13 +1,21 @@
 "use client";
 
-import { React, useState } from "react";
+import React from "react";
 import styles from "./timer.module.css";
 
-function Timer({ timer, handleTimer }) {
-  const [sessionDuration, setSessionDuration] = useState("25");
+function TimerController({
+  timer,
+  handleTimer,
+  sessionDuration,
+  setSessionDuration,
+}) {
+  // const [sessionDuration, setSessionDuration] = useState("25");
 
   function handleSelect(event) {
-    console.log(event.target);
+    setSessionDuration(event.target.value);
+  }
+
+  function handleTimerInput(event) {
     setSessionDuration(event.target.value);
   }
 
@@ -23,6 +31,8 @@ function Timer({ timer, handleTimer }) {
             placeholder="Work period"
             id="timerInput"
             className={styles.userInput}
+            value={sessionDuration}
+            onChange={handleTimerInput}
           />
         </form>
         <label className={styles.selectDuration}>
@@ -45,4 +55,4 @@ function Timer({ timer, handleTimer }) {
   );
 }
 
-export default Timer;
+export default TimerController;

@@ -17,7 +17,6 @@ export default function Timeline({ taskData }) {
     i == 12 ? morningTimeSlots.push("·") : morningTimeSlots.push("·", "·");
   }
 
-  console.log(morningTimeSlots.length);
   for (let i = 13; i < 19; i++) {
     afternoonTimeLabels.push(i + ":00", i + ":30");
     // halftimeLabels.push(i + ":30");

@@ -1,7 +1,7 @@
-import { React, useState, useEffect } from "react";
+import { React, useState } from "react";
 import styles from "./todo.module.scss";
 
-export default function Todo({ task, timer, handleTimer, setTaskData }) {
+export default function Todo({ task, setTaskData, sessionDuration }) {
   // task.active && console.log(timer);
   // drive = streak = 4 * work session in a row
 
@@ -35,9 +35,10 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
 
     //👇 this gets into the closure
     let intervalCounter = 0;
-    const userValue = parseInt(document.getElementById("timerInput").value);
+    // const userValue = sessionDuration;
+    console.log(sessionDuration);
     const taskInterval = setInterval(() => {
-      if (intervalCounter < userValue) {
+      if (intervalCounter < sessionDuration) {
         intervalCounter++;
         setCounter((prev) => prev + 1);
       } else {
