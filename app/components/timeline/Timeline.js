@@ -14,10 +14,10 @@ export default function Timeline({ taskData }) {
       ? morningTimeLabels.push("0" + i + ":00", "0" + i + ":30")
       : morningTimeLabels.push(i + ":00", i + ":30");
     // halftimeLabels.push(i + ":30");
-    morningTimeSlots.push("·", "·");
+    i == 12 ? morningTimeSlots.push("·") : morningTimeSlots.push("·", "·");
   }
 
-  console.log(morningTimeSlots);
+  console.log(morningTimeSlots.length);
   for (let i = 13; i < 19; i++) {
     afternoonTimeLabels.push(i + ":00", i + ":30");
     // halftimeLabels.push(i + ":30");
@@ -41,7 +41,7 @@ export default function Timeline({ taskData }) {
 
   const morningTimeSlotElements = morningTimeSlots.map((item, index) => (
     <p className={styles.timeSlot} key={index}>
-      {endDates.includes(index + 5) ? "🍌" : item}
+      {endDates.includes(index + 5) ? "🍅" : item}
     </p>
   ));
 

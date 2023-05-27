@@ -9,8 +9,9 @@
 
 @mixin neubrutal-after-hover{
     content: "";
-    border-radius: 5px;
+    border-radius: 4px;
     position: absolute;
+    // border: 1px solid grey;
     z-index: -1;
     top: 0;
     left: 0;
@@ -37,6 +38,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    border:1px solid grey;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     opacity: 0;
     -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -70,7 +72,7 @@
 
 .taskItem:hover {
 
-     transform: scale(1.01, 1.01);
+    //  transform: scale(1.01, 1.01);
     
 }
 

@@ -5,7 +5,6 @@ export default function Todo({ task, timer, handleTimer, setTaskData }) {
   // task.active && console.log(timer);
   // drive = streak = 4 * work session in a row
 
-  console.log(document.getElementsByClassName("taskItem::after"));
   const [counter, setCounter] = useState(0);
   const [active, setActive] = useState(false);
   const driveLimit = 4;
