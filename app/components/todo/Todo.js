@@ -15,7 +15,7 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
 
   function handleTaskClick(event) {
     // handleTimer(event);
-
+    console.log(task);
     setActive(true);
 
     const currentSessionStart = Date.now();
@@ -31,12 +31,12 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
       end_date: "ongoing session...",
       prev_break: delta,
       prev_break_short: delta < 5000 ? true : false,
+      task_id: task.id,
+      duration: 0,
     };
 
     //👇 this gets into the closure
     let intervalCounter = 0;
-    // const userValue = sessionDuration;
-    console.log(sessionDuration);
     const taskInterval = setInterval(() => {
       if (intervalCounter < sessionDuration) {
         intervalCounter++;
@@ -51,6 +51,8 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
             if (item.id == task.id) {
               let currentSession = item.sessions[item.sessions.length - 1];
               currentSession.end_date = Date.now();
+              currentSession.duration =
+                (currentSession.end_date - currentSession.start_date) / 1000;
               return {
                 ...item,
                 active: false,
@@ -72,10 +74,7 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
               active: true,
               sessions: [...item.sessions, currentSession],
             }
-          : {
-              ...item,
-              active: false,
-            };
+          : item;
       });
       return modifiedTasks;
     });

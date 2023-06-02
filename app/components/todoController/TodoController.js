@@ -5,8 +5,6 @@ import Todo from "../todo/Todo.js";
 import styles from "./todoController.module.scss";
 
 export default function TodoController({
-  timer,
-  handleTimer,
   taskData,
   setTaskData,
   sessionDuration,
