@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "./timer.module.css";
+import styles from "./timerController.module.css";
 
 function TimerController({
   timer,
@@ -9,8 +9,6 @@ function TimerController({
   sessionDuration,
   setSessionDuration,
 }) {
-  // const [sessionDuration, setSessionDuration] = useState("25");
-
   function handleSelect(event) {
     setSessionDuration(event.target.value);
   }

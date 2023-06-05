@@ -28,11 +28,11 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
 
     const currentSession = {
       start_date: currentSessionStart,
-      end_date: "ongoing session...",
+      end_date: null,
       prev_break: delta,
       prev_break_short: delta < 5000 ? true : false,
       task_id: task.id,
-      duration: 0,
+      duration: counter * 1000,
     };
 
     //👇 this gets into the closure
@@ -51,8 +51,9 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
             if (item.id == task.id) {
               let currentSession = item.sessions[item.sessions.length - 1];
               currentSession.end_date = Date.now();
-              currentSession.duration =
-                (currentSession.end_date - currentSession.start_date) / 1000;
+              // mimicing minutes below!
+              currentSession.duration = sessionDuration * 60 * 1000;
+              // (currentSession.end_date - currentSession.start_date) / 1000;
               return {
                 ...item,
                 active: false,
@@ -64,7 +65,7 @@ export default function Todo({ task, setTaskData, sessionDuration }) {
           return modifiedTasks;
         });
       }
-    }, 1000);
+    }, 100);
 
     setTaskData((prevTasks) => {
       let modifiedTasks = prevTasks.map(function (item) {
