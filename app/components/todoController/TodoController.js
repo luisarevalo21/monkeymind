@@ -5,9 +5,11 @@ import Todo from "../todo/Todo.js";
 import styles from "./todoController.module.scss";
 
 export default function TodoController({
+  timer,
   taskData,
   setTaskData,
   sessionDuration,
+  handleTimer,
 }) {
   const [taskInput, setTaskInput] = useState("");
 
@@ -17,7 +19,7 @@ export default function TodoController({
         {
           id: prevTasks.length + 1,
           title: taskInput,
-          active: false,
+          running: false,
           resources: [],
           progress: 0,
           sessions: [],
@@ -48,7 +50,9 @@ export default function TodoController({
         <Todo
           key={task.id}
           task={task}
+          timer={timer}
           index={index}
+          handleTimer={handleTimer}
           setTaskData={setTaskData}
           sessionDuration={sessionDuration}
         />

@@ -1,6 +1,6 @@
 "use client";
 
-import { React, useState, useEffect, use } from "react";
+import { React, useState, useEffect } from "react";
 import TimerController from "../components/timerController/TimerController";
 import TodoController from "../components/todoController/TodoController";
 import Timeline from "../components/timeline/Timeline";
@@ -9,7 +9,8 @@ import Chatbot from "../components/chatbot/Chatbot";
 export default function Work() {
   const [timer, setTimer] = useState(0);
   const [taskData, setTaskData] = useState([]);
-  const [sessionDuration, setSessionDuration] = useState(25);
+  const [sessionDuration, setSessionDuration] = useState(3);
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
     let local_data = JSON.parse(localStorage.getItem("monkey_tasks"));
@@ -24,28 +25,34 @@ export default function Work() {
     localStorage.setItem("monkey_tasks", JSON.stringify(taskData));
   }, [taskData]);
 
+  useEffect(() => {
+    let timerInterval = null;
+    let counter = timer;
+    if (active) {
+      timerInterval = setInterval(function () {
+        if (counter < sessionDuration) {
+          counter++;
+          setTimer((prev) => prev + 1);
+        } else {
+          clearInterval(timerInterval);
+          setTimer(0);
+          setActive(false);
+        }
+      }, 10);
+    }
+    return () => {
+      clearInterval(timerInterval);
+    };
+  }, [active]);
+
   function handleTimer(event) {
-    event.preventDefault();
-    const userValue = parseInt(document.getElementById("timerInput").value);
-    let counter = 0;
-    const intervalId = setInterval(function () {
-      if (counter < userValue) {
-        counter++;
-        setTimer((prev) => prev + 1);
-      } else {
-        clearInterval(intervalId);
-        setTaskData((prev) => {
-          let newData = prev.map((item) => ({ ...item, active: false }));
-          setTaskData(newData);
-        });
-        setTimer(0);
-      }
-    }, 1000);
+    // event.preventDefault();
+    setActive((prev) => !prev);
   }
 
   return (
     <main>
-      <Timeline taskData={taskData} />
+      <Timeline taskData={taskData} timer={timer} />
       <div className="taskControl">
         <TodoController
           timer={timer}

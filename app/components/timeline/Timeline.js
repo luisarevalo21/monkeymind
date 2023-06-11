@@ -1,27 +1,14 @@
+"use client";
+
 import React from "react";
+import Session from "./Session.js";
 import styles from "./timeline.module.scss";
 import Link from "next/link";
 import { getFontDefinitionFromNetwork } from "next/dist/server/font-utils";
-import { calculateTimes } from "./timelineHelpers";
+import { calculateTimeLabels } from "./timelineHelpers";
 
-export default function Timeline({ taskData }) {
-  const { morningTimes, noonTimes, nightTimes, widthPerMinute } =
-    calculateTimes();
-
-  function generateLabels(arr) {
-    return arr.map((item, index) => (
-      <p className={styles.timeLabel} key={index}>
-        {item}
-      </p>
-    ));
-  }
-
-  function generateSlots(arr) {
-    return arr.map((item, index) => (
-      <p className={styles.timeSlot} key={index}></p>
-    ));
-  }
-
+export default function Timeline({ taskData, timer }) {
+  const { morningTimes, noonTimes, nightTimes } = calculateTimeLabels();
   const morningLabels = generateLabels(morningTimes);
   const noonLabels = generateLabels(noonTimes);
   const nightLabels = generateLabels(nightTimes);
@@ -30,47 +17,28 @@ export default function Timeline({ taskData }) {
   const noonSlots = generateSlots(noonTimes);
   const nightSlots = generateSlots(nightTimes);
 
+  function generateLabels(arr) {
+    return arr.map((item, index) => (
+      <p className={styles.timeLabel} key={index}>
+        {item}
+      </p>
+    ));
+  }
+  function generateSlots(arr) {
+    return arr.map((item, index) => (
+      <p className={styles.timeSlot} key={index}></p>
+    ));
+  }
+
   const allSessions = taskData.reduce((acc, curr) => {
-    return acc.concat(curr.sessions);
+    if (curr.sessions !== []) {
+      return acc.concat(curr.sessions);
+    }
   }, []);
-
+  console.log(allSessions);
   const pastSessionElements = allSessions.map((item, index) => {
-    let now = new Date();
-    let fourInTheMorning = now.setHours(4, 0, 0, 0);
-
-    console.log(now, item.start_date);
-    console.log("delta: ", item.start_date - fourInTheMorning);
-
-    let left =
-      ((item.start_date - fourInTheMorning) / 1000 / 60) * widthPerMinute;
-
-    let width = (item.duration / 1000 / 60) * widthPerMinute;
-
-    console.log("item duration:", item.duration);
-    console.log("width percentage", width);
-
-    console.table([item.duration, left, width]);
-    // it should return an array of elements defining the
-    // x coordinate of the completed task,
-    // the origin is the beginning of timeSlots
-
-    let style = {
-      left: `${left}%`,
-      width: `${width}%`,
-    };
-
-    return (
-      <div className={styles.pastSession} key={index} style={style}>
-        {item.task_id}
-      </div>
-    );
+    return <Session session={item} key={index} />;
   });
-
-  console.log("all sessions", allSessions);
-
-  // const allDaySlots = allDayTimes.map((item, index) => (
-  //   <p className={styles.timeSlot} key={index}></p>
-  // ));
 
   return (
     <div className={styles.component}>
