@@ -1,8 +1,9 @@
 "use client";
 
-import { React, useState } from "react";
+import React, { useState } from "react";
 import Todo from "../todo/Todo.js";
 import styles from "./todoController.module.scss";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TodoController({
   timer,
@@ -10,19 +11,23 @@ export default function TodoController({
   setTaskData,
   sessionDuration,
   handleTimer,
+  setCurrentTask,
+  setScrollCoordinate,
 }) {
   const [taskInput, setTaskInput] = useState("");
+  //  const MemoizedTodo = React.memo(Todo);
 
-  function handleTaskSubmit(event) {
+  function handleNewTask(event) {
     if (taskInput !== "") {
       setTaskData((prevTasks) => [
         {
-          id: prevTasks.length + 1,
+          id: uuidv4(),
           title: taskInput,
           running: false,
           resources: [],
           progress: 0,
           sessions: [],
+          color: "white",
         },
         ...prevTasks,
       ]);
@@ -55,6 +60,8 @@ export default function TodoController({
           handleTimer={handleTimer}
           setTaskData={setTaskData}
           sessionDuration={sessionDuration}
+          setCurrentTask={setCurrentTask}
+          setScrollCoordinate={setScrollCoordinate}
         />
       );
     });
@@ -71,7 +78,7 @@ export default function TodoController({
           value={taskInput}
           onChange={handleInputChange}
         />
-        <button className={styles.taskSubmitBtn} onClick={handleTaskSubmit}>
+        <button className={styles.taskSubmitBtn} onClick={handleNewTask}>
           +
         </button>
       </div>

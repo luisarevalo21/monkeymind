@@ -1,5 +1,8 @@
-import { React, useState, useEffect } from "react";
+"use client";
+
+import { React, useState, useEffect, useRef, useContext } from "react";
 import styles from "./todo.module.scss";
+import { WorkContext } from "@/app/work/WorkContext";
 
 export default function Todo({
   task,
@@ -8,12 +11,13 @@ export default function Todo({
   handleTimer,
   setTaskData,
   sessionDuration,
+  setScrollCoordinate,
+  setCurrentTask,
 }) {
   const [running, setRunning] = useState(false);
-  const [currentSession, setCurrentSession] = useState({});
+  const widthPercentagePerMinute = 100 / 48 / 30;
 
-  console.log("running at main function", running);
-
+  const workContext = useContext(WorkContext);
   useEffect(() => {
     if (running) {
       setTaskData((prevTasks) => {
@@ -28,6 +32,8 @@ export default function Todo({
         return updatedTasks;
       });
     }
+
+    console.log(workContext);
     return () => {
       if (timer == sessionDuration) {
         setRunning(false);
@@ -46,117 +52,42 @@ export default function Todo({
     };
   }, [timer]);
 
-  function findTimeDelta(next, prev) {
-    return prev ? next - prev : "First session";
-  }
+  function startSession(event) {
+    const now = new Date();
+    const four_am = new Date().setHours(4, 0, 0, 0);
 
-  function startSession() {
-    let newSession = {
-      start_date: Date.now(),
+    const newSession = {
+      start_date: Date.parse(now),
       end_date: null,
       prev_break:
-        task.sessions.length > 0 &&
-        Date.now() - task.sessions[task.sessions.length - 1].end_date,
+        task.sessions.length > 0
+          ? Date.parse(now) - task.sessions[task.sessions.length - 1].end_date
+          : "No previous session",
       prev_break_short: false,
       task_id: task.id,
+      task_title: task.title,
       duration: 0,
       total_time: 0,
+      since_4am: Date.parse(now) - four_am,
     };
 
+    // this is where I need to fix!!!
     setTaskData((prevTasks) => {
       prevTasks[index].sessions.push(newSession);
       return prevTasks;
     });
+
+    setScrollCoordinate(
+      (newSession.since_4am / 1000 / 60) * widthPercentagePerMinute
+    );
     handleTimer();
     setRunning(true);
   }
 
-  // function handleTaskClick(event) {
-  //   setActive(true);
-
-  //   const newSessionStart = Date.now();
-  //   const prevSessionEnd =
-  //     task.sessions.length > 0
-  //       ? task.sessions[task.sessions.length - 1].end_date
-  //       : null;
-
-  //   const delta = findTimeDelta(newSessionStart, prevSessionEnd);
-
-  //   const newSession = {
-  //     start_date: newSessionStart,
-  //     end_date: null,
-  //     prev_break: delta,
-  //     prev_break_short: delta < 5000 ? true : false,
-  //     task_id: task.id,
-  //     duration: 0,
-  //   };
-
-  //  // 👇 this gets into the closure
-  //   let intervalCounter = 0;
-  //   const taskInterval = setInterval(() => {
-  //     if (intervalCounter < sessionDuration) {
-  //       intervalCounter++;
-  //       setCounter((prev) => prev + 1);
-  //       setSession((prev) => {
-  //         console.log(prev);
-  //         return { ...prev, duration: prev.duration + 1 };
-  //       });
-  //     } else {
-  //       clearInterval(taskInterval);
-  //       setActive(false);
-
-  //       // instead update upon session end make it real time
-
-  //       //👇  when finished update the session-end time
-
-  //       setTaskData((prevTasks) => {
-  //         let modifiedTasks = prevTasks.map(function (item) {
-  //           if (item.id == task.id) {
-  //             let newSession = item.sessions[item.sessions.length - 1];
-  //             // newSession.end_date = Date.now();
-  //             // mimicing minutes below!
-  //             // newSession.duration = sessionDuration * 60 * 1000;
-  //             // (newSession.end_date - newSession.start_date) / 1000;
-
-  //             setSession((prev) => ({
-  //               ...prev,
-  //               end_date: prev.start_date + prev.duration * 60 * 1000,
-  //             }));
-
-  //             newSession = session;
-  //             return {
-  //               ...item,
-  //               active: false,
-  //             };
-  //           } else {
-  //             return item;
-  //           }
-  //         });
-  //         return modifiedTasks;
-  //       });
-  //     }
-  //   }, 100);
-
-  //   setTaskData((prevTasks) => {
-  //     let modifiedTasks = prevTasks.map(function (item) {
-  //       if (item.id == task.id) {
-  //         return {
-  //           ...item,
-  //           active: true,
-  //           sessions: [...item.sessions, newSession],
-  //         };
-  //       } else {
-  //         return item;
-  //       }
-  //     });
-  //     return modifiedTasks;
-  //   });
-  // }
-
   const loadBarStyle = {
     width: running ? `${(timer / 25) * 100}%` : "100%",
     background: running ? "lightgreen" : "white",
-    height: "1px",
+    height: "2px",
   };
 
   // let bananas = task.sessions.map(() => "🍌");

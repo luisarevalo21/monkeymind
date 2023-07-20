@@ -16,9 +16,6 @@ export default function Header() {
             <Link href="/work">Work</Link>
           </li>
           <li>
-            <Link href="/blog">Blog</Link>
-          </li>
-          <li>
             <Link className="loginBtn" href="/login">
               Login
             </Link>

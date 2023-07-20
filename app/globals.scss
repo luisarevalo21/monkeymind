@@ -132,6 +132,7 @@ a {
 /* --header-end--- */
 
 button,
+.loginBtn,
 input {
     @include neubrutal();
     font-family: inherit;
@@ -140,7 +141,7 @@ input {
     border-radius: 4px;
     background-color: white;
 }
-
+.loginBtn,
 input:hover,
 button:hover {
     @include neubrutal-hover()

@@ -3,7 +3,7 @@
 import React from "react";
 import styles from "./timerController.module.css";
 
-function TimerController({
+export default function TimerController({
   timer,
   handleTimer,
   sessionDuration,
@@ -52,5 +52,3 @@ function TimerController({
     </div>
   );
 }
-
-export default TimerController;

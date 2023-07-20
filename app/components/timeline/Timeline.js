@@ -1,21 +1,43 @@
 "use client";
-
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Session from "./Session.js";
 import styles from "./timeline.module.scss";
-import Link from "next/link";
-import { getFontDefinitionFromNetwork } from "next/dist/server/font-utils";
 import { calculateTimeLabels } from "./timelineHelpers";
 
-export default function Timeline({ taskData, timer }) {
+export default function Timeline({ taskData, scrollCoordinate }) {
   const { morningTimes, noonTimes, nightTimes } = calculateTimeLabels();
   const morningLabels = generateLabels(morningTimes);
   const noonLabels = generateLabels(noonTimes);
   const nightLabels = generateLabels(nightTimes);
-
   const morningSlots = generateSlots(morningTimes);
   const noonSlots = generateSlots(noonTimes);
   const nightSlots = generateSlots(nightTimes);
+
+  const timelineScope = useRef(null);
+  const currentSession = useRef(null);
+
+  const allSessions = taskData.reduce((acc, curr) => {
+    if (curr.sessions !== []) {
+      return acc.concat(curr.sessions);
+    }
+  }, []);
+
+  if (timelineScope.current) {
+    const scrollWidth = timelineScope.current.scrollWidth;
+    const scrollUnit = scrollWidth / 100;
+    timelineScope.current.scroll({
+      left: scrollCoordinate * scrollUnit - 50,
+      behavior: "smooth",
+    });
+  }
+
+  function scrollToSession() {
+    timelineScope.current &&
+      timelineScope.current.scroll({
+        left: scrollCoordinate,
+        behavior: "smooth",
+      });
+  }
 
   function generateLabels(arr) {
     return arr.map((item, index) => (
@@ -24,30 +46,25 @@ export default function Timeline({ taskData, timer }) {
       </p>
     ));
   }
+
   function generateSlots(arr) {
     return arr.map((item, index) => (
       <p className={styles.timeSlot} key={index}></p>
     ));
   }
 
-  const allSessions = taskData.reduce((acc, curr) => {
-    if (curr.sessions !== []) {
-      return acc.concat(curr.sessions);
-    }
-  }, []);
-  console.log(allSessions);
-  const pastSessionElements = allSessions.map((item, index) => {
+  const sessionElements = allSessions.map((item, index) => {
     return <Session session={item} key={index} />;
   });
 
   return (
     <div className={styles.component}>
       <nav className={styles.selectTimeScope}>
-        <a href="#morning">🛏️</a>
-        <a href="#noon">🌞</a>
-        <a href="#night">🌛</a>
+        <a onClick={scrollToSession}>🛏️</a>
+        <a onClick={scrollToSession}>🌞</a>
+        <a onClick={scrollToSession}>🌛</a>
       </nav>
-      <div className={`container ${styles.dailyScope}`} id="dailyScope">
+      <div className={`container ${styles.dailyScope}`} ref={timelineScope}>
         <div className={styles.morningTimes} id="morning">
           <div className={styles.timeLabels}>{morningLabels}</div>
           <div className={styles.timeSlots}>{morningSlots}</div>
@@ -60,8 +77,8 @@ export default function Timeline({ taskData, timer }) {
           <div className={styles.timeLabels}>{nightLabels}</div>
           <div className={styles.timeSlots}>{nightSlots}</div>
         </div>
-        {pastSessionElements !== [] && (
-          <div className={styles.sessions}>{pastSessionElements}</div>
+        {sessionElements !== [] && (
+          <div className={styles.sessions}>{sessionElements}</div>
         )}
       </div>
     </div>
