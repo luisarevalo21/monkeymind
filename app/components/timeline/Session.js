@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./timeline.module.scss";
 
 export default function Session(props) {
-  const { duration, since_4am, task_title } = props.session;
+  const { duration, since_4am, task_title, color } = props.session;
 
   const widthPercentagePerMinute = 100 / 48 / 30;
 
@@ -13,11 +13,12 @@ export default function Session(props) {
   let style = {
     left: `${x_on_timeline}%`,
     width: `${width}%`,
+    backgroundColor: color,
   };
 
   return (
     <div className={styles.pastSession} style={style}>
-      {task_title}
+      {/* {task_title} */}
     </div>
   );
 }

@@ -12,24 +12,35 @@ export default function Timeline({ taskData, scrollCoordinate }) {
   const morningSlots = generateSlots(morningTimes);
   const noonSlots = generateSlots(noonTimes);
   const nightSlots = generateSlots(nightTimes);
+  const timelineRef = useRef(null);
+  const widthPercentagePerMinute = 1 / 48 / 30;
 
-  const timelineScope = useRef(null);
-  const currentSession = useRef(null);
+  useEffect(() => {
+    // width of timeline in pixels
+    const scrollWidth = timelineRef.current.scrollWidth;
+    const scrollUnit = scrollWidth / 100;
+    const now = Date.now();
+    const four_am = new Date().setHours(4, 0, 0, 0);
+    const x_coordinate = calculateCoordinate(now, four_am);
+    //   ((now - four_am) / 1000 / 60) * widthPercentagePerMinute;
+    console.log(x_coordinate);
+
+    timelineRef.current.scroll({
+      left: x_coordinate * scrollWidth - 100,
+      behavior: "smooth",
+    });
+  }, []);
+
+  function calculateCoordinate(now, origin) {
+    const widthPercentagePerMinute = 1 / 48 / 30;
+    return ((now - origin) / 1000 / 60) * widthPercentagePerMinute;
+  }
 
   const allSessions = taskData.reduce((acc, curr) => {
     if (curr.sessions !== []) {
       return acc.concat(curr.sessions);
     }
   }, []);
-
-  if (timelineScope.current) {
-    const scrollWidth = timelineScope.current.scrollWidth;
-    const scrollUnit = scrollWidth / 100;
-    timelineScope.current.scroll({
-      left: scrollCoordinate * scrollUnit - 50,
-      behavior: "smooth",
-    });
-  }
 
   function scrollToSession() {
     timelineScope.current &&
@@ -64,7 +75,7 @@ export default function Timeline({ taskData, scrollCoordinate }) {
         <a onClick={scrollToSession}>🌞</a>
         <a onClick={scrollToSession}>🌛</a>
       </nav>
-      <div className={`container ${styles.dailyScope}`} ref={timelineScope}>
+      <div className={`container ${styles.dailyScope}`} ref={timelineRef}>
         <div className={styles.morningTimes} id="morning">
           <div className={styles.timeLabels}>{morningLabels}</div>
           <div className={styles.timeSlots}>{morningSlots}</div>

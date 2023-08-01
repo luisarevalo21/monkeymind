@@ -48,7 +48,9 @@ export default function TimerController({
           </select>
         </label>
       </div>
-      <button onClick={handleTimer}>Start</button>
+      <button className={styles.startBtn} onClick={handleTimer}>
+        Start
+      </button>
     </div>
   );
 }

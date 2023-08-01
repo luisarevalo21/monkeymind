@@ -23,6 +23,8 @@
 
 .startBtn {
     width: 100%;
+    border: 1px solid var(--myblack);
+    background-color: gold
 }
 
 .enterDuration {

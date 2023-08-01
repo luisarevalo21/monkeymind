@@ -5,31 +5,52 @@ import TimerController from "../components/timerController/TimerController";
 import TodoController from "../components/todoController/TodoController";
 import Timeline from "../components/timeline/Timeline";
 import Chatbot from "../components/chatbot/Chatbot";
-import { WorkContext } from "./WorkContext";
+import { tasksCollection, db } from "../firebase";
+import { onSnapshot } from "firebase/firestore";
+import Bookmarks from "../components/bookmarks/Bookmarks";
 
 export default function Work() {
-  const [timer, setTimer] = useState(0);
-  // lazy initiation, if no todo returns null, parse returns null
   const [taskData, setTaskData] = useState(
     () => JSON.parse(localStorage.getItem("monkey_tasks")) || []
   );
-  const [sessionDuration, setSessionDuration] = useState(3);
+  const [timer, setTimer] = useState(0);
+  const [cloudTasks, setCloudTasks] = useState([]);
+  const [sessionDuration, setSessionDuration] = useState(25);
   const [active, setActive] = useState(false);
   const [scrollCoordinate, setScrollCoordinate] = useState(0);
   const [currentTask, setCurrentTask] = useState(taskData[0] && taskData[0]);
   const timerInterval = useRef(null);
+  // lazy initiation, if no todo returns null, parse returns null
 
-  // const sessionInterval = useRef(null);
-
-  // const now = new Date();
-  // const four_am = new Date();
-  // console.log(now);
-  // console.log(Date.parse(now));
-  // console.log(four_am.setHours(4, 0, 0, 0));
-
+  // effect for  the local storage
   useEffect(() => {
     localStorage.setItem("monkey_tasks", JSON.stringify(taskData));
   }, [taskData]);
+
+  // effect for the firestore db
+  useEffect(() => {
+    // onSnaphot() is used for real time changes,
+    // like an event listener it listens to db changes on this app
+    // and when occured, it acts upon with the callback function
+    // passing the most recent snaphot
+    // that means firestore opens a websocket to this application and
+    // stay connected until it unsubscribed from the websocket
+    // therefore onSnaphot returns a unsubscription function to cleanup
+
+    const unsubscribe = onSnapshot(tasksCollection, (snapshot) => {
+      const tasksArr = snapshot.docs.map((doc) =>
+        // here map returns objects, with data extracted from doc with data() function (otherwise its obfuscated)
+        //
+        ({
+          ...doc.data(),
+          id: doc.id,
+        })
+      );
+      setCloudTasks(tasksArr);
+      console.log(tasksCollection);
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     let counter = timer;
@@ -41,7 +62,7 @@ export default function Work() {
         } else {
           setActive(false);
         }
-      }, 10);
+      }, 100);
       return () => {
         clearInterval(timerInterval.current);
         setTimer(0);
@@ -66,6 +87,8 @@ export default function Work() {
           sessionDuration={sessionDuration}
           setScrollCoordinate={setScrollCoordinate}
           setCurrentTask={setCurrentTask}
+          setCloudTasks={setCloudTasks}
+          cloudTasks={cloudTasks}
         />
         <TimerController
           timer={timer}
@@ -73,7 +96,8 @@ export default function Work() {
           handleTimer={handleTimer}
           setSessionDuration={setSessionDuration}
         />
-        <Chatbot />
+        <Chatbot currentTask={currentTask} />
+        {/* <Bookmarks /> */}
       </div>
     </main>
   );

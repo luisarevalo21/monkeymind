@@ -24,18 +24,21 @@
     border: 1px solid var(--border);
 }
 
-
-@mixin neubrutal{
-    box-shadow: 0px 2px 0px var(--shadow);
-    transition: box-shadow 0.2s ease-in-out;
-    border: 1px solid var(--border);
-}
-
 @mixin neubrutal-hover{
     box-shadow: 0px 4px 0px var(--hover-shadow);
     border: 1px solid var(--hover-border);
 }
 
+// @mixin neubrutal{
+//     box-shadow: 0px 2px 0px var(--myblack);
+//     transition: box-shadow 0.2s ease-in-out;
+//     border: 1px solid var(--myblack);
+// }
+
+// @mixin neubrutal-hover{
+//     box-shadow: 0px 4px 0px var(--myblack);
+//     border: 1px solid var(--myblack);
+// }
 
 @mixin minimal{
     box-shadow: 0px 1px 2px gray;
@@ -141,7 +144,8 @@ input {
     border-radius: 4px;
     background-color: white;
 }
-.loginBtn,
+
+.loginBtn:hover,
 input:hover,
 button:hover {
     @include neubrutal-hover()
@@ -152,6 +156,7 @@ button {
     text-transform: uppercase;
     background: var(--mygreen);
     color: var(--myblack);
+    border: var(--myblack)
 }
 
 input {
@@ -159,11 +164,9 @@ input {
     margin: 1em auto;
 }
 
-
 input:focus {
     outline-color: var(--mygreen);
 }
-
 
 footer {
     grid-area: footer;
@@ -173,7 +176,6 @@ footer {
     min-height: 5em;
     background: var(--myblack);
     text-align: center;
-
 }
 
 @media (min-width: 600px) {
