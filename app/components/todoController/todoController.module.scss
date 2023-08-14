@@ -1,3 +1,4 @@
+@import "/app/variables";
 .component {
     grid-area: todo;
     display: flex;
@@ -6,6 +7,10 @@
     box-sizing: border-box;
     border-radius: 3px;
     padding: 1em;
+}
+
+.title{
+    margin-bottom: 1em;
 }
 
 .tasks {
@@ -18,47 +23,55 @@
     text-align: center;
     color: grey;
 }
+
 .taskInputContainer {
+    display: grid;
+    grid-template-areas: "taskInputs saveBtn saveBtn";
+    grid-template-columns: 8fr 1fr 1fr;
+    gap: 0.2em;
+    border-radius: 4px;
+}
+
+.taskInputs {
     display: flex;
     flex-direction: row;
-    align-items: baseline;
-}
-
-.taskColorDropdown{
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        -ms-appearance: none;
-        appearance: none;
-        outline: 0;
-        border: none;
-        height: 3em;
-}
-
-.taskColorOption{
-         -webkit-appearance: none;
-        -moz-appearance: none;
-        -ms-appearance: none;
-        appearance: none;
-    background-color: white;
-        height: 1em;
-        width: 1em;
-}
-.taskSubmitBtn {
-    font-family: inherit;
-    font-size: inherit;
+    row-gap: 1em;
     border-radius: 4px;
-    padding: 1em;
-    margin-left: 0.5em;
-    height: 100%;
+    border: 1px solid lightgray;
+}
+
+.taskInputs:hover{
+    border: 1px dashed black;
+}
+
+.taskText, .taskText:hover{
+     border:none;
+     box-shadow: none;
+     margin: 0.2em;
+}
+
+.taskText:focus{
+    outline: none;
+    // outline: 1px dashed lightgrey;
+}
+
+.taskSubmitBtn {
+    // border-radius: 4px;
     background-color: white;
-    border : 1px solid var(--border);
-    color: white;
+    // border : 1px solid var(--border);
     text-shadow: 0 1px 1px grey;
 }
 
 .taskSubmitBtn:hover {
-   box-shadow: 0px 4px 0px var(--myblack);
-   border: 1px solid var(--hover-border);
+    @include neubrutal-black-hover;
+}
+
+.taskSubmitBtn:active {
+    @include neubrutal-black-active;
+}
+
+.selectTaskColor{
+    // grid-area: taskColor;
 }
 
 .deleteBtn {
@@ -70,13 +83,13 @@
 
 .deleteAll {
     width: 50%;
-    background-color: var(--myred);
-    border: 1px solid var(--myblack)
+    background-color: var(--monkey_red);
+   // border: 1px solid var(--myblack)
 }
 
 .shareAll {
     width: 50%;
-    border: 1px solid var(--myblack)
+   // border: 1px solid var(--myblack)
 }
 
 .actionBtns {

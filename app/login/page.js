@@ -1,36 +1,30 @@
 import React from "react";
+import styles from "./login.module.scss";
 
 export default function Login() {
   return (
-    <div>
-      <div class="splash">
+    <div className={styles.component}>
+      <div className={styles.splash}>
         <h1>
-          <span class="not-inline">Lost</span>
-          <strong>your attention?</strong>
+          <span className={styles.notInline}>Are you a</span>
+          <strong>multitasker?</strong>
         </h1>
-        <span class="beta-text">Currently in Beta</span>
-        <p class="top-text"></p>
+        <p className={styles.monkeyEmoji}>🐒</p>
+        <p className={styles.topText}>We don't think so..</p>
       </div>
-      <div class="login">
-        <img
-          class="img-main"
-          src="images/avatar.png"
-          alt="My Scrimba avatar."
-        />
+      <div className={styles.login}>
         <h2>Monkey Mind</h2>
-        <span class="subheading">Take control of your attention back</span>
+        <span className={styles.subheading}>Gain your attention back!</span>
         <p>
-          It's time to focus on what really matters. MonkeyMind helps you to
-          enhace your digital well-being and productivity
+          Time to focus on what really matters! MonkeyMind helps you to stay
+          single-tasked and committed to your goals.
         </p>
-        <form>
+        <form className={styles.loginForm}>
           <input type="text" required placeholder="Name" aria-label="Name" />
           <input type="email" required placeholder="Email" aria-label="Email" />
-          <button class="btn btn-primary">Sign in</button>
+          <button>Sign in</button>
         </form>
-        <p class="fine-print">
-          We'll never share your information without permission
-        </p>
+        <p className={styles.betaText}>Currently in Beta</p>
       </div>
     </div>
   );

@@ -1,0 +1,57 @@
+.component{
+    max-width: 1200px;
+    margin:auto;
+    min-height: 100vh;
+    display: flex;
+    gap: 2em;
+    flex-direction: row;
+    padding-bottom: 5em;
+
+}
+
+.splash, .login{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    padding: 4em;
+}
+
+.splashImage{
+
+}
+
+.login{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+    text-align: center;
+}
+
+.loginForm > input{
+    margin: 0.3em 0px;
+}
+
+.loginForm > button{
+    margin: 0.3em 0px;
+    background-color: gold;
+    width: 100%;
+}
+.notInline{
+    display:block;
+}
+.monkeyEmoji{
+   font-size: 10em;
+}
+
+.betaText{
+
+}
+
+.topText{
+
+}

@@ -1,53 +1,55 @@
 "use client";
 
 import { React, useState, useEffect, useRef, useContext } from "react";
+import { TaskContext } from "@/app/work/page";
 import styles from "./todo.module.scss";
 import { db } from "@/app/firebase";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 
-export default function Todo({
-  task,
-  index,
-  timer,
-  handleTimer,
-  setTaskData,
-  sessionDuration,
-  setScrollCoordinate,
-  deleteTask,
-}) {
+export default function Todo({ task, setTaskData, deleteTask }) {
   const [running, setRunning] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [editMode, setEditMode] = useState(false);
   const inputRef = useRef(null);
   const showOnHover = useRef(null);
 
-  // to calculate x distance from left - x coordinate -  on timeline
-  const widthPercentagePerMinute = 100 / 48 / 30;
+  const {
+    currentTask,
+    setCurrentSession,
+    setCurrentTask,
+    timer,
+    handleTimer,
+    sessionDuration,
+    setScrollCoordinate,
+  } = useContext(TaskContext);
 
-  // const workContext = useContext(WorkContext);
+  // console.log(value);
+  // to calculate x distance from left - x coordinate -  on timeline
+  //const widthPercentagePerMiliSeconds = 1 / 24h/ 60m/ 60s / 1000 ms
+  const widthPercentagePerMiliSeconds = 1 / 24 / 60 / 60 / 1000;
 
   // checks if the "running" state turned true and to trigger duration increment
+
+  // TIMER EFFECT
   useEffect(() => {
     if (running) {
-      setTaskData((prevTasks) => {
-        let updatedTasks = prevTasks.map((item) => {
-          if (item.id == task.id) {
-            item.sessions[item.sessions.length - 1].duration++;
-            return item;
-          } else {
-            return item;
-          }
-        });
-        return updatedTasks;
-      });
-    }
-    // cleanout
-    return () => {
-      if (timer == sessionDuration) {
-        setRunning(false);
+      if (task.cloud) {
+        let sessionsClone = [...task.sessions];
+        let lastSession = sessionsClone.pop();
+
+        lastSession.duration++;
+        sessionsClone.push(lastSession);
+
+        const saveOnCloud = async function () {
+          const docRef = doc(db, "tasks", task.id);
+          await setDoc(docRef, { sessions: sessionsClone }, { merge: true });
+        };
+        saveOnCloud();
+      } else {
         setTaskData((prevTasks) => {
           let updatedTasks = prevTasks.map((item) => {
             if (item.id == task.id) {
-              item.sessions[item.sessions.length - 1].end_date = Date.now();
+              item.sessions[item.sessions.length - 1].duration++;
               return item;
             } else {
               return item;
@@ -56,21 +58,57 @@ export default function Todo({
           return updatedTasks;
         });
       }
+    }
+    // cleanout
+    return () => {
+      if (timer == sessionDuration) {
+        setRunning(false);
+
+        if (task.cloud) {
+          let sessionsClone = [...task.sessions];
+          const lastSession = sessionsClone.pop();
+
+          lastSession.end_date = Date.now();
+          sessionsClone.push(lastSession);
+
+          const saveOnCloud = async function () {
+            const docRef = doc(db, "tasks", task.id);
+            await setDoc(
+              docRef,
+              { sessions: sessionsClone, running: false },
+              { merge: true }
+            );
+          };
+          saveOnCloud();
+        } else {
+          setTaskData((prevTasks) => {
+            console.log(currentTask);
+            let updatedTasks = prevTasks.map((item) => {
+              if (item.id == task.id) {
+                item.sessions[item.sessions.length - 1].end_date = Date.now();
+                return item;
+              } else {
+                return item;
+              }
+            });
+            return updatedTasks;
+          });
+        }
+      }
     };
   }, [timer]);
 
-  function startNewSession() {
-    // session initialization time
-    const now = new Date();
-    // 4am of that day
+  // START NEW SESSION ON CLICK
+  async function startNewSession() {
+    const now = Date.now();
     const four_am = new Date().setHours(4, 0, 0, 0);
 
     const newSession = {
-      start_date: Date.parse(now),
+      start_date: now,
       end_date: null,
       prev_break:
         task.sessions.length > 0
-          ? Date.parse(now) - task.sessions[task.sessions.length - 1].end_date
+          ? now - task.sessions[task.sessions.length - 1].end_date
           : "No previous session",
       prev_break_short: false,
       task_id: task.id,
@@ -78,33 +116,45 @@ export default function Todo({
       duration: 0,
       total_time: 0,
       color: task.color,
-      since_4am: Date.parse(now) - four_am,
+      since_4am: now - four_am,
     };
 
-    // for the cloud one I need to update the setCloudTasks
-    setTaskData((prevTasks) => {
-      let currentItem = prevTasks.filter((item) => {
-        return item.id == task.id;
-      });
-
-      let unchangedItems = prevTasks.filter((item) => {
-        return item.id != task.id;
-      });
-      currentItem[0].sessions.push(newSession);
-      //  prevTasks[index].sessions.push(newSession);
-      return [...currentItem, ...unchangedItems];
-    });
-
-    setScrollCoordinate(
-      (newSession.since_4am / 1000 / 60) * widthPercentagePerMinute
-    );
+    setScrollCoordinate(newSession.since_4am * widthPercentagePerMiliSeconds);
+    setCurrentTask(task);
+    setCurrentSession(newSession);
     handleTimer();
+
+    if (task.cloud) {
+      const docRef = doc(db, "tasks", task.id);
+      await setDoc(
+        docRef,
+        { sessions: [...task.sessions, newSession], running: true },
+        { merge: true }
+      );
+    } else {
+      setTaskData((prevTasks) => {
+        let modifiedItem = prevTasks.filter((item) => {
+          return item.id == task.id;
+        });
+        modifiedItem[0].sessions.push(newSession);
+        let unmodifiedItems = prevTasks.filter((item) => {
+          return item.id != task.id;
+        });
+        return [...modifiedItem, ...unmodifiedItems];
+      });
+    }
+
     setRunning(true);
   }
 
-  async function editCloudTask(text) {
+  async function saveOnCloud(event) {
+    event.stopPropagation();
     const docRef = doc(db, "tasks", task.id);
-    await setDoc(docRef, { title: text }, { merge: true });
+    await setDoc(
+      docRef,
+      { title: taskTitle, updatedAt: Date.now() },
+      { merge: true }
+    );
   }
 
   function editTask(event) {
@@ -113,7 +163,7 @@ export default function Todo({
     inputRef.current.focus();
   }
 
-  function saveChange(event) {
+  function saveOnLocal(event) {
     event.stopPropagation();
 
     setTaskData((prevTasks) => {
@@ -124,9 +174,16 @@ export default function Todo({
         return item.id !== task.id;
       });
       targetTask[0].title = taskTitle;
+      targetTask[0].updatedAt = Date.now();
       return [...targetTask, ...restOfData];
     });
     setEditMode(false);
+  }
+
+  function handlePressEnter(event) {
+    if (editMode && event.key == "Enter") {
+      saveOnLocal(event);
+    }
   }
 
   function handleTitleChange(event) {
@@ -135,7 +192,7 @@ export default function Todo({
   }
 
   function handleInputClick(event) {
-    event.stopPropagation();
+    editMode && event.stopPropagation();
   }
 
   function handleMouseEnter(event) {
@@ -151,14 +208,13 @@ export default function Todo({
     height: "2px",
   };
 
-  // let bananas = task.sessions.map(() => "🍌");
-
   return (
     <div
       className={styles.taskItem}
       onClick={startNewSession}
       onMouseOver={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{ border: editMode && "1px dashed black" }}
     >
       <p
         className={styles.sessionInfo}
@@ -169,10 +225,12 @@ export default function Todo({
         onMouseEnter={handleMouseEnter}
         onChange={handleTitleChange}
         onClick={handleInputClick}
+        onKeyDown={handlePressEnter}
         value={taskTitle}
         ref={inputRef}
         readOnly={!editMode}
         type="text"
+        style={{ cursor: editMode ? "text" : "pointer" }}
       />
       <p className={styles.stopWatch}>
         {running && <span className={styles.stopWatchBtn}>⏱️</span>}
@@ -180,7 +238,10 @@ export default function Todo({
       </p>
       <div className={styles.showOnHover} ref={showOnHover}>
         {editMode ? (
-          <span className={styles.saveBtn} onClick={saveChange}>
+          <span
+            className={styles.saveBtn}
+            onClick={task.cloud ? saveOnCloud : saveOnLocal}
+          >
             💾
           </span>
         ) : (
@@ -195,7 +256,7 @@ export default function Todo({
           🗑️
         </span>
       </div>
-      <p className="loadBar" style={{ ...loadBarStyle }}></p>
+      <p className={styles.loadBar} style={{ ...loadBarStyle }}></p>
     </div>
   );
 }

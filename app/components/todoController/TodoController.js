@@ -1,24 +1,16 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, Children } from "react";
 import Todo from "../todo/Todo.js";
 import Dropdown from "../dropdown/Dropdown.js";
 import styles from "./todoController.module.scss";
 import { v4 as uuidv4 } from "uuid";
+// these are from our locally created firestore app
 import { tasksCollection, db } from "@/app/firebase.js";
+// these are from local firestore dependencies
 import { addDoc, deleteDoc, doc } from "firebase/firestore";
 
-export default function TodoController({
-  timer,
-  taskData,
-  setTaskData,
-  sessionDuration,
-  handleTimer,
-  setCurrentTask,
-  setScrollCoordinate,
-  cloudTasks,
-  setCloudTasks,
-}) {
+export default function TodoController({ cloudTasks, taskData, setTaskData }) {
   const colorArray = [
     { title: "green", value: "#A7F3D0" },
     { title: "purple", value: "#DDD6FE" },
@@ -27,56 +19,70 @@ export default function TodoController({
     { title: "red", value: "#FECDD3" },
   ];
 
-  const [taskInput, setTaskInput] = useState("");
-  const [taskColor, setTaskColor] = useState(colorArray[0]);
+  const [taskText, setTaskText] = useState("");
+  const [taskColor, setTaskColor] = useState(generateRandomColor);
+
+  // CREATE LOCAL TASK
+
+  function generateRandomColor() {
+    let random = Math.floor(Math.random() * 5);
+    return colorArray[random];
+  }
 
   function createLocalTask(event) {
-    event.preventDefault();
-    if (taskInput !== "") {
+    if (taskText != "") {
       const newTask = {
         id: uuidv4(),
-        title: taskInput,
+        title: taskText,
         running: false,
         resources: [],
         progress: 0,
         sessions: [],
         color: taskColor.value,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
       };
 
       setTaskData((prevTasks) => [newTask, ...prevTasks]);
-      // reset input
-      setTaskInput("");
+      setTaskText("");
+      setTaskColor(generateRandomColor());
     }
   }
-  // firestore function
+  // CREAT FIRESTORE TASK
   async function createCloudTask(event) {
-    // no need for id, firestore gives it
-    event.preventDefault();
     const newCloudTask = {
-      title: taskInput,
+      // no need for id, firestore gives it
+      title: taskText,
       running: false,
+      value_goal: null,
       resources: [],
       progress: 0,
       sessions: [],
+      cloud: true,
       color: taskColor.value,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
 
-    // add a newly created object as a document to the collection named "taskCollection"
+    // add newly created task as a document to the collection named "taskCollection"
     // addDoc returns a reference to that doc
     const newCloudTaskRef = await addDoc(tasksCollection, newCloudTask);
   }
 
+  function sortTasks() {
+    setTaskData((prev) => {
+      prev.sort((a, b) => {
+        return a.updatedAt - b.updatedAt;
+      });
+    });
+  }
   // create a task both on local and cloud storage
   function handleInputChange(event) {
-    setTaskInput(event.target.value);
-  }
-
-  function handleSelect(event) {
-    setTaskColor(event.target.value);
+    setTaskText(event.target.value);
   }
 
   function deleteTask(event, taskId) {
-    // to prevent event from bubbling to parent, we use stopPropagation!
+    // to prevent event from bubbling to parent use stopPropagation!
     event.stopPropagation();
     setTaskData((prevTasks) => {
       // the most practical way to remove an item from an array
@@ -107,14 +113,7 @@ export default function TodoController({
         <Todo
           key={task.id}
           task={task}
-          timer={timer}
-          index={index}
-          handleTimer={handleTimer}
           setTaskData={setTaskData}
-          sessionDuration={sessionDuration}
-          setCurrentTask={setCurrentTask}
-          setScrollCoordinate={setScrollCoordinate}
-          taskData={taskData}
           deleteTask={deleteTask}
         />
       );
@@ -125,13 +124,8 @@ export default function TodoController({
       <Todo
         key={task.id}
         task={task}
-        timer={timer}
         index={index}
-        handleTimer={handleTimer}
         setTaskData={setTaskData}
-        sessionDuration={sessionDuration}
-        setCurrentTask={setCurrentTask}
-        setScrollCoordinate={setScrollCoordinate}
         deleteTask={deleteCloudTask}
       />
     );
@@ -139,16 +133,23 @@ export default function TodoController({
 
   return (
     <div className={`container ${styles.component}`}>
-      <h4>Local Tasks</h4>
+      <h4 className={styles.title}>Tasks</h4>
       <div className={styles.taskInputContainer}>
-        <input
-          id="taskInput"
-          type="text"
-          className={styles.taskInput}
-          placeholder="Create new task 🤞"
-          value={taskInput}
-          onChange={handleInputChange}
-        />
+        <div className={styles.taskInputs}>
+          <Dropdown
+            selected={taskColor}
+            optionsArray={colorArray}
+            selectItem={setTaskColor}
+            className={styles.selectTaskColor}
+          />
+          <input
+            type="text"
+            className={styles.taskText}
+            placeholder="Create new task 🤞"
+            value={taskText}
+            onChange={handleInputChange}
+          />
+        </div>
         <button className={styles.taskSubmitBtn} onClick={createLocalTask}>
           💾
         </button>
@@ -156,30 +157,28 @@ export default function TodoController({
           ☁️
         </button>
       </div>
-      <Dropdown
-        selected={taskColor}
-        optionsArray={colorArray}
-        selectItem={setTaskColor}
-      />
+
       <div className={styles.tasks}>
-        {/* {taskElements} */}
         {taskElements.length == 0 ? (
           <p className={styles.noTaskWarning}>You have no tasks</p>
         ) : (
-          taskElements
+          <>
+            <h5 className={styles.title}>Local Tasks</h5>
+            {taskElements}
+          </>
         )}
       </div>
-      <h4>Cloud Tasks</h4>
-      <div className={styles.tasks}>
-        {/* {taskElements} */}
 
+      <div className={styles.tasks}>
         {cloudTaskElements.length == 0 ? (
           <p className={styles.noTaskWarning}>You have no cloud tasks</p>
         ) : (
-          cloudTaskElements
+          <>
+            <h5 className={styles.title}>Cloud Tasks</h5>
+            {cloudTaskElements}
+          </>
         )}
       </div>
-
       <div className={styles.actionBtns}>
         <button className={styles.deleteAll} onClick={handleDeleteAll}>
           Delete all

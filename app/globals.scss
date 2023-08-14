@@ -1,5 +1,6 @@
 /* Karla font */
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap');
+@import "./variables";
 
 * {
     margin: 0;
@@ -7,49 +8,26 @@
     box-sizing: border-box;
 }
 
+// { title: "green", value: "#A7F3D0" },
+// { title: "purple", value: "#DDD6FE" },
+// { title: "yellow", value: "#FDE68A" },
+// { title: "blue", value: "#BAE6FD" },
+// { title: "red", value: "#FECDD3" },
 :root {
     --myblack: #202124;
     --mygreen: lightseagreen;
     --shadow-green: seagreen;
     --myred: lightcoral;
-    --shadow: lightgrey;
+    --shadow: grey;
     --hover-shadow : grey;
-    --hover-border : #202124;
-    --border:  lightgrey;  
-}
-
-@mixin neubrutal{
-    box-shadow: 0px 2px 0px var(--shadow);
-    transition: box-shadow 0.2s ease-in-out;
-    border: 1px solid var(--border);
-}
-
-@mixin neubrutal-hover{
-    box-shadow: 0px 4px 0px var(--hover-shadow);
-    border: 1px solid var(--hover-border);
-}
-
-// @mixin neubrutal{
-//     box-shadow: 0px 2px 0px var(--myblack);
-//     transition: box-shadow 0.2s ease-in-out;
-//     border: 1px solid var(--myblack);
-// }
-
-// @mixin neubrutal-hover{
-//     box-shadow: 0px 4px 0px var(--myblack);
-//     border: 1px solid var(--myblack);
-// }
-
-@mixin minimal{
-    box-shadow: 0px 1px 2px gray;
-    background: white;
-    transition: box-shadow 0.2s ease-in-out;
-    border: 1px solid black;
-    border: inset none;
-}
-
-@mixin minimal-hover{
-    box-shadow: 0px 2px 5px gray;
+    --hover-border : grey;
+    --border:  grey;  
+    --vintage : #F6ECC9; 
+    --monkey_green : #A7F3D0;
+    --monkey_purple : #DDD6FE;
+    --monkey_yellow : #FDE68A;
+    --monkey_blue : #BAE6FD;
+    --monkey_red : #FECDD3;
 }
 
 html,
@@ -57,20 +35,24 @@ body {
     margin: 0;
     padding: 0;
     min-width: 300px;
+  //  background-color: var(--vintage);
 }
 
 body { 
-
     font-family: 'Karla', sans-serif;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
+main{
     max-width: 1200px;
     margin: 0 auto;
-    min-height: 100vh;
+    min-height: calc(100vh - 6em);
     padding: 1em;
+}
+
+.workPage {
+    display: flex;
+    flex-direction: column;
+   // background-color: var(--vintage);
 }
 
 .taskControl {
@@ -79,41 +61,6 @@ main {
     gap: 1em;
     align-items: flex-start;
     justify-content: space-around;
-}
-
-.haiku {
-    margin: 0px auto;
-}
-
-/* - header-start -  */
-header {
-    display: flex;
-    flex-direction: row;
-    max-width: 1200px;
-    margin: 0 auto;
-    height: 6em;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1em;
-    /* font-family: 'Space Grotesk', sans-serif; */
-}
-
-.logo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    color: #1F2937
-}
-
-.logo-icon {
-    height: 2.5em;
-    padding: 0.4em;
-}
-
-.logo-text {
-    font-size: 1.25em;
-    font-weight: bold;
 }
 
 ul {
@@ -132,31 +79,33 @@ a {
     color: #1F2937
 }
 
-/* --header-end--- */
-
 button,
 .loginBtn,
 input {
-    @include neubrutal();
+    @include neubrutal-black();
     font-family: inherit;
     font-size: 1em;
     padding: 1em;
-    border-radius: 4px;
     background-color: white;
 }
 
 .loginBtn:hover,
 input:hover,
 button:hover {
-    @include neubrutal-hover()
+    @include neubrutal-black-hover()
 }
 
 button {
     font-weight: bolder;
     text-transform: uppercase;
-    background: var(--mygreen);
+    background: var(--monkey_green);
     color: var(--myblack);
-    border: var(--myblack)
+}
+
+button:active{
+    // transform: translateY(2);
+    // box-shadow: 0px 2px 0px var(--shadow);
+    @include neubrutal-black-active;
 }
 
 input {
@@ -175,7 +124,6 @@ footer {
     padding: 2em;
     min-height: 5em;
     background: var(--myblack);
-    text-align: center;
 }
 
 @media (min-width: 600px) {

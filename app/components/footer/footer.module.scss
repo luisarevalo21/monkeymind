@@ -1,0 +1,13 @@
+.component{
+    display: grid;
+    grid-template-columns: 2fr 2fr 2fr 2fr;
+    grid-template-areas: "logo contact blog heiku";
+}
+
+.logo{
+    grid-area: logo;
+}
+
+.heiku{
+    grid-area: heiku;
+}

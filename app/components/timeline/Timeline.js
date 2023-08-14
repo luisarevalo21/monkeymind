@@ -4,7 +4,7 @@ import Session from "./Session.js";
 import styles from "./timeline.module.scss";
 import { calculateTimeLabels } from "./timelineHelpers";
 
-export default function Timeline({ taskData, scrollCoordinate }) {
+export default function Timeline({ taskData, cloudTasks, scrollCoordinate }) {
   const { morningTimes, noonTimes, nightTimes } = calculateTimeLabels();
   const morningLabels = generateLabels(morningTimes);
   const noonLabels = generateLabels(noonTimes);
@@ -13,17 +13,15 @@ export default function Timeline({ taskData, scrollCoordinate }) {
   const noonSlots = generateSlots(noonTimes);
   const nightSlots = generateSlots(nightTimes);
   const timelineRef = useRef(null);
-  const widthPercentagePerMinute = 1 / 48 / 30;
+  const widthRatioPerMiliSeconds = 1 / 24 / 60 / 60 / 1000;
 
   useEffect(() => {
+    // INITIAL SCROLL
     // width of timeline in pixels
     const scrollWidth = timelineRef.current.scrollWidth;
-    const scrollUnit = scrollWidth / 100;
     const now = Date.now();
     const four_am = new Date().setHours(4, 0, 0, 0);
     const x_coordinate = calculateCoordinate(now, four_am);
-    //   ((now - four_am) / 1000 / 60) * widthPercentagePerMinute;
-    console.log(x_coordinate);
 
     timelineRef.current.scroll({
       left: x_coordinate * scrollWidth - 100,
@@ -31,20 +29,35 @@ export default function Timeline({ taskData, scrollCoordinate }) {
     });
   }, []);
 
+  useEffect(() => {
+    const scrollWidth = timelineRef.current.scrollWidth;
+    timelineRef.current.scroll({
+      left: scrollCoordinate * scrollWidth - 100,
+      behavior: "smooth",
+    });
+  }, [scrollCoordinate]);
+
   function calculateCoordinate(now, origin) {
-    const widthPercentagePerMinute = 1 / 48 / 30;
-    return ((now - origin) / 1000 / 60) * widthPercentagePerMinute;
+    return (now - origin) * widthRatioPerMiliSeconds;
   }
 
-  const allSessions = taskData.reduce((acc, curr) => {
+  const allLocalSessions = taskData.reduce((acc, curr) => {
     if (curr.sessions !== []) {
       return acc.concat(curr.sessions);
     }
   }, []);
 
+  const allCloudSessions = cloudTasks.reduce((acc, curr) => {
+    if (curr.sessions !== []) {
+      return acc.concat(curr.sessions);
+    }
+  }, []);
+
+  const allSessions = allLocalSessions.concat(allCloudSessions);
+
   function scrollToSession() {
-    timelineScope.current &&
-      timelineScope.current.scroll({
+    timelineRef.current &&
+      timelineRef.current.scroll({
         left: scrollCoordinate,
         behavior: "smooth",
       });

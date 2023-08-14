@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import styles from "./timerController.module.css";
+import styles from "./timerController.module.scss";
 
 export default function TimerController({
   timer,

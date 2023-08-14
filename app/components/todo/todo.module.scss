@@ -1,84 +1,30 @@
-
-@mixin neubrutal{
-    position: relative;
-    // box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.7);
-    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.1);
-    // box-shadow: 0 1px 0px var(--myblack);
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-   border: 1px solid lightgray;
-     border: 1px solid var(--myblack);
-}
-
-@mixin neubrutal-after-hover{
-    content: "";
-    border-radius: 4px;
-    position: absolute;
-    // border: 1px solid grey;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 5px 0px rgba(0, 0, 0, 0.3);
-    // box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.7);
-    // box-shadow: 0 5px 0px var(--myblack);
-    opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}   
-
-@mixin minimal{
-    position: relative;
-    border: 1px solid lightgray;
-    box-shadow: 0 1px 0px rgba(0,0,0,0.15);
-}
-
-@mixin minimal-after-hover{
-    content: "";
-    border-radius: 4px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border:1px solid grey;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
+@import "/app/variables";
 
 .taskItem {
-   @include neubrutal();
+   @include neubrutal-black();
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 7fr 2fr 2fr;
-    grid-template-rows: minmax(1.5em, auto) 2px;
+    grid-template-rows: minmax(1.5em, auto) 1px;
     grid-template-areas:
         "sessionInfo taskText stopWatch todoBtns"
         "loadBar loadBar loadBar loadbar";
     align-items: center;
     font-family: inherit;
     font-size: 1rem;
-    border-radius: 4px;
     padding: 1em;
     margin-bottom: 0.5em;
+    
 }
-
-.taskItem::after {
-    @include neubrutal-after-hover()
-}
-
-.taskItem:hover::after {
-    opacity: 1;
-  }
 
 .taskItem:hover {
-    transform: scale(1.01, 1.01);
-    transform: translateY( -1px);
+    @include neubrutal-black-hover();
+    transform: translateY( -2px);
     cursor: pointer;
+}
+
+.taskItem:active{
+    @include neubrutal-black-active;
 }
 
 .sessionInfo{
@@ -86,7 +32,7 @@
     width: 1em;
     height: 1em;
     border-radius: 50%;
-    border:1px solid black;
+ 
 }
 
 .taskText {
@@ -97,11 +43,13 @@
     margin: 0;
     padding: 0;
     background-color: inherit;
+    transform:none;
 }
 
 .taskText:hover {
     border: none;
     box-shadow: none;
+    transform: none;
 }
 
 .stopWatch {
@@ -112,6 +60,7 @@
 .stopWatchBtn{
     margin-right: 0.5em;
 }
+
 .saveBtn {
    grid-area: edit;
    text-align: center;
@@ -131,4 +80,8 @@
 .showOnHover{
     // display: none;
     visibility: hidden;
+}
+
+.loadBar{
+    grid-area: loadBar;
 }

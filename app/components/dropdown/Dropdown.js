@@ -23,15 +23,17 @@ export default function Dropdown({ selected, optionsArray, selectItem }) {
         className={styles.option}
         onClick={(event) => handleOptionClick(event, item)}
         key={index}
-      >
-        {item.title}
-      </div>
+        style={{ backgroundColor: item.value }}
+      ></div>
     );
   });
 
   return (
-    <div className={styles.select} onClick={handleSelectClick}>
-      <p className={styles.title}>{selected.title}</p>
+    <div
+      className={styles.select}
+      onClick={handleSelectClick}
+      style={{ backgroundColor: selected.value }}
+    >
       <div className={styles.optionElements} ref={optionElementsRef}>
         {optionElements}
       </div>

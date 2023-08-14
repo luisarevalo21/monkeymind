@@ -1,24 +1,33 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, createContext } from "react";
+
 import TimerController from "../components/timerController/TimerController";
 import TodoController from "../components/todoController/TodoController";
 import Timeline from "../components/timeline/Timeline";
 import Chatbot from "../components/chatbot/Chatbot";
+import Todo from "../components/todo/Todo";
+import Bookmarks from "../components/bookmarks/Bookmarks";
+
 import { tasksCollection, db } from "../firebase";
 import { onSnapshot } from "firebase/firestore";
-import Bookmarks from "../components/bookmarks/Bookmarks";
+
+const TaskContext = createContext();
+export { TaskContext };
 
 export default function Work() {
   const [taskData, setTaskData] = useState(
     () => JSON.parse(localStorage.getItem("monkey_tasks")) || []
   );
   const [timer, setTimer] = useState(0);
-  const [cloudTasks, setCloudTasks] = useState([]);
-  const [sessionDuration, setSessionDuration] = useState(25);
   const [active, setActive] = useState(false);
+  const [cloudTasks, setCloudTasks] = useState([]);
+  const [currentSession, setCurrentSession] = useState({});
+  const [sessionDuration, setSessionDuration] = useState(25);
   const [scrollCoordinate, setScrollCoordinate] = useState(0);
-  const [currentTask, setCurrentTask] = useState(taskData[0] && taskData[0]);
+  const [currentTask, setCurrentTask] = useState(
+    (taskData && taskData[0]) || "none"
+  );
   const timerInterval = useRef(null);
   // lazy initiation, if no todo returns null, parse returns null
 
@@ -27,7 +36,7 @@ export default function Work() {
     localStorage.setItem("monkey_tasks", JSON.stringify(taskData));
   }, [taskData]);
 
-  // effect for the firestore db
+  // FETCING SNAPSHOT OF FIRESTORE AND UPDATING STATE
   useEffect(() => {
     // onSnaphot() is used for real time changes,
     // like an event listener it listens to db changes on this app
@@ -47,7 +56,6 @@ export default function Work() {
         })
       );
       setCloudTasks(tasksArr);
-      console.log(tasksCollection);
     });
     return unsubscribe;
   }, []);
@@ -62,7 +70,7 @@ export default function Work() {
         } else {
           setActive(false);
         }
-      }, 100);
+      }, 1000);
       return () => {
         clearInterval(timerInterval.current);
         setTimer(0);
@@ -76,29 +84,40 @@ export default function Work() {
   }
 
   return (
-    <main>
-      <Timeline taskData={taskData} scrollCoordinate={scrollCoordinate} />
-      <div className="taskControl">
-        <TodoController
-          timer={timer}
+    <div className="workPage">
+      <TaskContext.Provider
+        value={{
+          sessionDuration,
+          timer,
+          handleTimer,
+          setCurrentSession,
+          setCurrentTask,
+          scrollCoordinate,
+          setScrollCoordinate,
+          currentTask,
+        }}
+      >
+        <Timeline
           taskData={taskData}
-          handleTimer={handleTimer}
-          setTaskData={setTaskData}
-          sessionDuration={sessionDuration}
-          setScrollCoordinate={setScrollCoordinate}
-          setCurrentTask={setCurrentTask}
-          setCloudTasks={setCloudTasks}
+          scrollCoordinate={scrollCoordinate}
           cloudTasks={cloudTasks}
         />
-        <TimerController
-          timer={timer}
-          sessionDuration={sessionDuration}
-          handleTimer={handleTimer}
-          setSessionDuration={setSessionDuration}
-        />
-        <Chatbot currentTask={currentTask} />
-        {/* <Bookmarks /> */}
-      </div>
-    </main>
+        <div className="taskControl">
+          <TodoController
+            taskData={taskData}
+            setTaskData={setTaskData}
+            cloudTasks={cloudTasks}
+          />
+          <TimerController
+            timer={timer}
+            sessionDuration={sessionDuration}
+            handleTimer={handleTimer}
+            setSessionDuration={setSessionDuration}
+          />
+          <Chatbot currentTask={currentTask} />
+          {/* <Bookmarks /> */}
+        </div>
+      </TaskContext.Provider>
+    </div>
   );
 }
