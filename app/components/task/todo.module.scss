@@ -1,7 +1,7 @@
 @import "/app/variables";
 
 .taskItem {
-   @include neubrutal-black();
+   @include minimal;
     display: grid;
     width: 100%;
     grid-template-columns: 1fr 7fr 2fr 2fr;
@@ -11,14 +11,16 @@
         "loadBar loadBar loadBar loadbar";
     align-items: center;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 1em;
     padding: 1em;
+    padding-right: 0.5em;
     margin-bottom: 0.5em;
+    border-radius: 3px;
     
 }
 
 .taskItem:hover {
-    @include neubrutal-black-hover();
+    @include minimal-hover;
     transform: translateY( -2px);
     cursor: pointer;
 }
@@ -78,7 +80,6 @@
 }
 
 .showOnHover{
-    // display: none;
     visibility: hidden;
 }
 

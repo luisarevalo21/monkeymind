@@ -14,13 +14,13 @@ export default function Timeline({ taskData, cloudTasks, scrollCoordinate }) {
   const nightSlots = generateSlots(nightTimes);
   const timelineRef = useRef(null);
   const widthRatioPerMiliSeconds = 1 / 24 / 60 / 60 / 1000;
+  const four_am = new Date().setHours(4, 0, 0, 0);
 
   useEffect(() => {
     // INITIAL SCROLL
     // width of timeline in pixels
     const scrollWidth = timelineRef.current.scrollWidth;
     const now = Date.now();
-    const four_am = new Date().setHours(4, 0, 0, 0);
     const x_coordinate = calculateCoordinate(now, four_am);
 
     timelineRef.current.scroll({
@@ -43,7 +43,10 @@ export default function Timeline({ taskData, cloudTasks, scrollCoordinate }) {
 
   const allLocalSessions = taskData.reduce((acc, curr) => {
     if (curr.sessions !== []) {
-      return acc.concat(curr.sessions);
+      const todaysSessions = curr.sessions.filter(
+        (session) => session.start_date > four_am
+      );
+      return acc.concat(todaysSessions);
     }
   }, []);
 

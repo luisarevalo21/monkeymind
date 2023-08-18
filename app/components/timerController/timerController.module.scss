@@ -1,11 +1,9 @@
 .component {
-    grid-area: timer;
     display: flex;
     flex-direction: column;
     border-radius: 4px;
     justify-content: flex-start;
     padding: 1em;
-    width: 50%;
 }
 
 .userInputs {
@@ -17,7 +15,7 @@
 }
 
 .counter {
-    font-size: 6em;
+    font-size: 5em;
     padding: 1rem;
 }
 
@@ -27,16 +25,16 @@
 }
 
 .enterDuration {
-    width: 50%;
+    width: 25%;
 }
 
 .selectDuration {
     width: 50%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
-.userInput {
+.customInput {
     margin: 0px;
 }
 
@@ -49,4 +47,32 @@
     border: 1px solid var(--myblack);
     box-shadow: 2px 2px 0px var(--shadow);
     transition: box-shadow 0.2s ease-in-out;
+}
+
+@media (max-width: 600px ){
+    .component{
+        display: grid;
+        grid-template: "counter inputs"
+                       "counter btn";
+        grid-template-columns: 1.5fr 1fr;
+        grid-template-rows: 1.5fr 1fr;
+    }
+
+    .counter {
+        grid-area: counter;
+    }
+
+    .userInputs{
+        grid-area: inputs;
+    }
+    .startBtn{
+        grid-area: btn;
+    }
+    .dropdown{
+
+    }
+
+    .customInput{
+
+    }
 }

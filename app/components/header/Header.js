@@ -21,7 +21,7 @@ export default function Header() {
               <Link href="/actmatrix">Act</Link>
             </li>
             <li>
-              <Link className="loginBtn" href="/login">
+              <Link className={styles.loginBtn} href="/login">
                 Login
               </Link>
             </li>

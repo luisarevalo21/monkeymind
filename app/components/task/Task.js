@@ -6,7 +6,7 @@ import styles from "./todo.module.scss";
 import { db } from "@/app/firebase";
 import { setDoc, doc, updateDoc } from "firebase/firestore";
 
-export default function Todo({ task, setTaskData, deleteTask }) {
+export default function Task({ task, setTaskData, deleteTask }) {
   const [running, setRunning] = useState(false);
   const [taskTitle, setTaskTitle] = useState(task.title);
   const [editMode, setEditMode] = useState(false);
@@ -82,9 +82,8 @@ export default function Todo({ task, setTaskData, deleteTask }) {
           saveOnCloud();
         } else {
           setTaskData((prevTasks) => {
-            console.log(currentTask);
             let updatedTasks = prevTasks.map((item) => {
-              if (item.id == task.id) {
+              if (item.id == currentTask.id) {
                 item.sessions[item.sessions.length - 1].end_date = Date.now();
                 return item;
               } else {

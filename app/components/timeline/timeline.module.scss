@@ -4,11 +4,9 @@
 
 .dailyScope {
     padding: 1em 0;
-    // left: -200px;
-    /* border: 1px solid var(--myblack); */
+   
     width: 100%; 
     display: grid;
-    // margin-top: 1em;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto;
     grid-template-areas:
@@ -17,7 +15,6 @@
         "sessions sessions sessions";
     align-items: center;
     overflow-x: scroll;
-    //scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
    
 }
@@ -30,13 +27,13 @@
 
 .timeLabels{
     display:grid;
-    grid-template-columns: repeat(16, minmax(3rem,1fr));
+    grid-template-columns: repeat(16, minmax(2rem,1fr));
 }
 
 .timeSlots {
     grid-area: timeSlots;
     display: grid;
-    grid-template-columns: repeat(16, minmax(3rem,1fr));
+    grid-template-columns: repeat(16, minmax(2rem,1fr));
     min-height: 4rem;
     box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.3);
   //  scroll-snap-align: start;
@@ -86,29 +83,27 @@
 }
 
 .sessions{
-    grid-area: sessions;
     position: relative;
+    grid-area: sessions;
     top: -3rem;
 }
-.pastSession{
+
+.session{
     position: absolute;
     display: inline-block;
     height: 2rem;
-    border: 1px solid lightgrey;
     background: white;
-    border-radius: 3px;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    border: 0.5px solid black;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.3);
 }
 
 .sessionInfo{
-    position: fixed;
-    // bottom : 1em; 
-    // left: 1em;
+    position: absolute;
     padding : 1em;
     display: none;
     border: 1px solid lightgrey;
     background: white;
-    border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     z-index: 1000;
+    border:1px solid black;
 }

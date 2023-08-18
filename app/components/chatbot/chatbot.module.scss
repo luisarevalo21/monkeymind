@@ -1,0 +1,46 @@
+@import "/app/_variables.scss";
+
+.component {
+    grid-area: aiChat;
+    padding: 1em;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.newChat {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5em;
+}
+
+.promptInput {
+    margin: 0px;
+}
+
+.submitPromptBtn {
+    padding: 1em;
+}
+
+.aiConversations {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    padding: 1em 0;
+}
+
+.conversationItem {
+    font-size: 1em;
+    padding: 1em;
+    padding-right: 0.5em;
+    margin-bottom: 0.5em;
+
+}
+
+.userPrompt{
+
+}
+
+.aiResponse{
+    font-family: 'Roboto Mono', monospace;
+}

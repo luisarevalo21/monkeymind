@@ -1,5 +1,6 @@
 /* Karla font */
 @import url('https://fonts.googleapis.com/css2?family=Karla:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap');
 @import "./variables";
 
 * {
@@ -8,11 +9,6 @@
     box-sizing: border-box;
 }
 
-// { title: "green", value: "#A7F3D0" },
-// { title: "purple", value: "#DDD6FE" },
-// { title: "yellow", value: "#FDE68A" },
-// { title: "blue", value: "#BAE6FD" },
-// { title: "red", value: "#FECDD3" },
 :root {
     --myblack: #202124;
     --mygreen: lightseagreen;
@@ -35,7 +31,6 @@ body {
     margin: 0;
     padding: 0;
     min-width: 300px;
-  //  background-color: var(--vintage);
 }
 
 body { 
@@ -47,20 +42,6 @@ main{
     margin: 0 auto;
     min-height: calc(100vh - 6em);
     padding: 1em;
-}
-
-.workPage {
-    display: flex;
-    flex-direction: column;
-   // background-color: var(--vintage);
-}
-
-.taskControl {
-    display: flex;
-    flex-direction: row;
-    gap: 1em;
-    align-items: flex-start;
-    justify-content: space-around;
 }
 
 ul {
@@ -79,27 +60,17 @@ a {
     color: #1F2937
 }
 
-button,
-.loginBtn,
-input {
+button{
     @include neubrutal-black();
-    font-family: inherit;
-    font-size: 1em;
-    padding: 1em;
-    background-color: white;
-}
-
-.loginBtn:hover,
-input:hover,
-button:hover {
-    @include neubrutal-black-hover()
-}
-
-button {
     font-weight: bolder;
     text-transform: uppercase;
     background: var(--monkey_green);
     color: var(--myblack);
+    letter-spacing: 0.1em;
+}
+
+button:hover {
+    @include neubrutal-black-hover()
 }
 
 button:active{
@@ -109,12 +80,16 @@ button:active{
 }
 
 input {
+    @include minimal;
     width: 100%;
     margin: 1em auto;
 }
+input:hover{
+    @include minimal-hover;
+}
 
 input:focus {
-    outline-color: var(--mygreen);
+    outline-color: var(--monkey_yellow);
 }
 
 footer {
@@ -141,7 +116,6 @@ footer {
 }
 
 @media (min-width: 768px) {
-
     body {
         grid-template-columns: 1fr 1fr 1fr;
         grid-template-areas:

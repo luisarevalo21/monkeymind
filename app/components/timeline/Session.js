@@ -23,17 +23,16 @@ export default function Session(props) {
     left: `${x_on_timeline * 100}%`,
     width: `${width * 100}%`,
     backgroundColor: color,
-    border: "0.5px solid black",
   };
 
   let sessinInfoStyle = {
     left: `${x_on_timeline * 100}% `,
-    top: "10em",
+    top: "-2em",
   };
 
   return (
     <div
-      className={styles.pastSession}
+      className={styles.session}
       style={style}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

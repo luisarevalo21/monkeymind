@@ -1,16 +1,21 @@
 "use client";
 
 import React, { useState, useRef, Children } from "react";
-import Todo from "../todo/Todo.js";
+import Task from "../task/Task.js";
 import Dropdown from "../dropdown/Dropdown.js";
-import styles from "./todoController.module.scss";
+import styles from "./taskController.module.scss";
 import { v4 as uuidv4 } from "uuid";
 // these are from our locally created firestore app
 import { tasksCollection, db } from "@/app/firebase.js";
 // these are from local firestore dependencies
 import { addDoc, deleteDoc, doc } from "firebase/firestore";
 
-export default function TodoController({ cloudTasks, taskData, setTaskData }) {
+export default function TodoController({
+  cloudTasks,
+  taskData,
+  setTaskData,
+  setCurrentTask,
+}) {
   const colorArray = [
     { title: "green", value: "#A7F3D0" },
     { title: "purple", value: "#DDD6FE" },
@@ -36,6 +41,7 @@ export default function TodoController({ cloudTasks, taskData, setTaskData }) {
         title: taskText,
         running: false,
         resources: [],
+        ai_conversations: [],
         progress: 0,
         sessions: [],
         color: taskColor.value,
@@ -56,6 +62,7 @@ export default function TodoController({ cloudTasks, taskData, setTaskData }) {
       running: false,
       value_goal: null,
       resources: [],
+      ai_conversations: [],
       progress: 0,
       sessions: [],
       cloud: true,
@@ -110,7 +117,7 @@ export default function TodoController({ cloudTasks, taskData, setTaskData }) {
     taskData &&
     taskData.map(function (task, index) {
       return (
-        <Todo
+        <Task
           key={task.id}
           task={task}
           setTaskData={setTaskData}
@@ -121,7 +128,7 @@ export default function TodoController({ cloudTasks, taskData, setTaskData }) {
 
   const cloudTaskElements = cloudTasks.map(function (task, index) {
     return (
-      <Todo
+      <Task
         key={task.id}
         task={task}
         index={index}
